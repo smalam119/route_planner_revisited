@@ -32,6 +32,9 @@ dependencies {
     //firebase_auth
     compile 'com.google.firebase:firebase-core:10.2.0'
     compile 'com.google.firebase:firebase-auth:10.2.0'
+
+    //google map
+    compile 'com.google.android.gms:play-services-maps:10.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
