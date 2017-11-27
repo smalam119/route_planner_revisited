@@ -48,11 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         prepareView();
-        if(mSharedPrefUtils.getToken() == null) {
-            Log.d("login_inf0","no token available");
-        } else {
-            startActivity(new Intent(this, MainActivity.class));
-        }
+        checkExistingUser();
     }
 
     @Override
@@ -103,10 +99,25 @@ public class LoginActivity extends AppCompatActivity {
         mAccessTokenTracker = new RPAFacebookAccessTokenTracker(this);
     }
 
-    public void prepareUtils() {
+    private void prepareUtils() {
         mSharedPrefUtils = new SharedPrefUtils(this);
         mFirebaseUtils = new FirebaseUtils(this);
         mValidations = new Validations();
+    }
+
+    private void checkExistingUser() {
+        if(mSharedPrefUtils.getToken() == null) {
+
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
+        if(mFirebaseUtils.getCurrentUser() == null) {
+
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
+            Toast.makeText(this, "welcome" + mFirebaseUtils.getCurrentUser().getEmail(),Toast.LENGTH_LONG).show();
+        }
     }
 
 }
