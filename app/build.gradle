@@ -35,6 +35,8 @@ dependencies {
 
     //google map
     compile 'com.google.android.gms:play-services-maps:10.2.0'
+
+    compile 'com.github.clans:fab:1.6.4'
 }
 
 apply plugin: 'com.google.gms.google-services'
