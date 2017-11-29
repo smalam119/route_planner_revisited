@@ -13,13 +13,7 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
-
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu_yellow"
@@ -30,51 +24,42 @@
         android:layout_marginRight="10dp"
         fab:menu_animationDelayPerItem="0"
         fab:menu_shadowColor="#444"
-        fab:menu_colorNormal="#FFB805"
-        fab:menu_colorPressed="#F2AB00"
-        fab:menu_colorRipple="#D99200"
+        fab:fab_colorNormal="@color/colorPrimary"
+        fab:fab_colorPressed="@color/white"
+        fab:fab_colorRipple="@color/yellow"
         fab:menu_labels_style="@style/MenuLabelsStyle"
         fab:menu_labels_showAnimation="@anim/jump_from_down"
         fab:menu_labels_hideAnimation="@anim/jump_to_down"
         >
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/profile_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/com_facebook_button_send_icon_white"
-            fab:fab_colorNormal="@color/yellow"
-            fab:fab_colorPressed="@color/colorPrimary"
-            fab:fab_colorRipple="@color/white"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:src="@drawable/alphabet_p"
+            fab:fab_colorNormal="@color/colorPrimaryDark"
+            fab:fab_colorPressed="@color/white"
+            fab:fab_colorRipple="@color/yellow"
+            fab:fab_label="@string/profile"/>
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/notification_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/com_facebook_button_send_icon_white"
-            fab:fab_colorNormal="@color/yellow"
-            fab:fab_colorPressed="@color/colorPrimary"
-            fab:fab_colorRipple="@color/white"
+            android:src="@drawable/alphabet_n"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/com_facebook_button_send_icon_white"
+            android:layout_alignParentRight="true"
             fab:fab_colorNormal="@color/yellow"
-            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_colorPressed="@color/white"
             fab:fab_colorRipple="@color/white"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+            fab:fab_label="@string/Notification" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

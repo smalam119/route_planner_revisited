@@ -18,11 +18,12 @@
     </style>
 
     <style name="MenuLabelsStyle">
-        <item name="android:background">@drawable/fab_add</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">#ffffff</item>
         <item name="android:textSize">14sp</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
     </style>
+
 
 </resources>
