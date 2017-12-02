@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.thyme.smalam119.routeplannerapplication.R;
@@ -13,53 +14,12 @@ import com.thyme.smalam119.routeplannerapplication.R;
  * Created by smalam119 on 12/2/17.
  */
 
-public class LocationInfoCard extends CardView {
+public class LocationInfoCard extends LinearLayout {
 
     private String mLocationTitle;
     private String mAddressLine;
     private String mLatlng;
     private String mDistance;
-
-    public String getmLocationTitle() {
-        return mLocationTitle;
-    }
-
-    public void setLocationTitle(String mLocationTitle) {
-        this.mLocationTitle = mLocationTitle;
-    }
-
-    public String getAddressLine() {
-        return mAddressLine;
-    }
-
-    public void setAddressLine(String mAddressLine) {
-        this.mAddressLine = mAddressLine;
-    }
-
-    public String getLatlng() {
-        return mLatlng;
-    }
-
-    public void setLatlng(String mLatlng) {
-        this.mLatlng = mLatlng;
-    }
-
-    public String getmDistance() {
-        return mDistance;
-    }
-
-    public void setmDistance(String mDistance) {
-        this.mDistance = mDistance;
-    }
-
-    public String getmOpenTime() {
-        return mOpenTime;
-    }
-
-    public void setmOpenTime(String mOpenTime) {
-        this.mOpenTime = mOpenTime;
-    }
-
     private String mOpenTime;
 
     View rootView;
@@ -69,6 +29,51 @@ public class LocationInfoCard extends CardView {
     TextView distanceTV;
     TextView openTimeTV;
     Button selectButton;
+
+    public String getmLocationTitle() {
+        return mLocationTitle;
+    }
+
+    public void setLocationTitle(String mLocationTitle) {
+        this.mLocationTitle = mLocationTitle;
+        locationTitleTV.setText(mLocationTitle);
+    }
+
+    public String getAddressLine() {
+        return mAddressLine;
+    }
+
+    public void setAddressLine(String mAddressLine) {
+        this.mAddressLine = mAddressLine;
+        addressLineTV.setText(mAddressLine);
+    }
+
+    public String getLatlng() {
+        return mLatlng;
+    }
+
+    public void setLatlng(String mLatlng) {
+        this.mLatlng = mLatlng;
+        latLngTV.setText(mLatlng);
+    }
+
+    public String getmDistance() {
+        return mDistance;
+    }
+
+    public void setmDistance(String mDistance) {
+        this.mDistance = mDistance;
+        distanceTV.setText(mDistance);
+    }
+
+    public String getmOpenTime() {
+        return mOpenTime;
+    }
+
+    public void setmOpenTime(String mOpenTime) {
+        this.mOpenTime = mOpenTime;
+        openTimeTV.setText(mOpenTime);
+    }
 
     public LocationInfoCard(Context context) {
         super(context);
