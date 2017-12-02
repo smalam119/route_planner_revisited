@@ -15,6 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <com.thyme.smalam119.routeplannerapplication.CustomeView.LocationInfoCard
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true">
+    </com.thyme.smalam119.routeplannerapplication.CustomeView.LocationInfoCard>
+
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu_yellow"
         android:layout_width="wrap_content"

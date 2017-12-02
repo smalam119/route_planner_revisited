@@ -15,6 +15,53 @@ import com.thyme.smalam119.routeplannerapplication.R;
 
 public class LocationInfoCard extends CardView {
 
+    private String mLocationTitle;
+    private String mAddressLine;
+    private String mLatlng;
+    private String mDistance;
+
+    public String getmLocationTitle() {
+        return mLocationTitle;
+    }
+
+    public void setLocationTitle(String mLocationTitle) {
+        this.mLocationTitle = mLocationTitle;
+    }
+
+    public String getAddressLine() {
+        return mAddressLine;
+    }
+
+    public void setAddressLine(String mAddressLine) {
+        this.mAddressLine = mAddressLine;
+    }
+
+    public String getLatlng() {
+        return mLatlng;
+    }
+
+    public void setLatlng(String mLatlng) {
+        this.mLatlng = mLatlng;
+    }
+
+    public String getmDistance() {
+        return mDistance;
+    }
+
+    public void setmDistance(String mDistance) {
+        this.mDistance = mDistance;
+    }
+
+    public String getmOpenTime() {
+        return mOpenTime;
+    }
+
+    public void setmOpenTime(String mOpenTime) {
+        this.mOpenTime = mOpenTime;
+    }
+
+    private String mOpenTime;
+
     View rootView;
     TextView locationTitleTV;
     TextView addressLineTV;

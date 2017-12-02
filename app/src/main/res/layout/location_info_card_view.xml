@@ -32,6 +32,7 @@
                     android:layout_weight="2"
                     android:text="@string/locationTitle_placeholder"
                     android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/title_text_size"
                     android:gravity="left" />
 
                 <Button
@@ -41,7 +42,7 @@
                     android:layout_weight="1"
                     android:text="@string/select"
                     android:textColor="@color/white"
-                    android:background="@drawable/rounded_button"/>
+                    style="@style/RoundedSelectButton"/>
 
             </LinearLayout>
 
@@ -63,17 +64,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="3"
-                android:layout_marginTop="@dimen/margin_8dp"
-                android:layout_marginBottom="@dimen/margin_8dp"
-                android:layout_marginLeft="@dimen/margin_8dp"
-                android:layout_marginRight="@dimen/margin_8dp">
+                android:weightSum="4">
 
                 <TextView
                     android:id="@+id/distance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="@string/distance_placeholder"
                     android:gravity="left" />
 
@@ -83,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="@string/open_time_placeholder"
-                    android:gravity="right" />
+                    android:gravity="left" />
 
             </LinearLayout>
 
