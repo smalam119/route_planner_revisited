@@ -1,7 +1,6 @@
 package com.thyme.smalam119.routeplannerapplication.CustomeView;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -18,17 +17,17 @@ public class LocationInfoCard extends LinearLayout {
 
     private String mLocationTitle;
     private String mAddressLine;
-    private String mLatlng;
+    private String mLatLng;
     private String mDistance;
     private String mOpenTime;
 
-    View rootView;
-    TextView locationTitleTV;
-    TextView addressLineTV;
-    TextView latLngTV;
-    TextView distanceTV;
-    TextView openTimeTV;
-    Button selectButton;
+    private View mRootView;
+    private TextView mLocationTitleTV;
+    private TextView mAddressLineTV;
+    private TextView mLatLngTV;
+    private TextView mDistanceTV;
+    private TextView mOpenTimeTV;
+    private Button mSelectButton;
 
     public String getmLocationTitle() {
         return mLocationTitle;
@@ -36,7 +35,7 @@ public class LocationInfoCard extends LinearLayout {
 
     public void setLocationTitle(String mLocationTitle) {
         this.mLocationTitle = mLocationTitle;
-        locationTitleTV.setText(mLocationTitle);
+        mLocationTitleTV.setText(mLocationTitle);
     }
 
     public String getAddressLine() {
@@ -45,34 +44,34 @@ public class LocationInfoCard extends LinearLayout {
 
     public void setAddressLine(String mAddressLine) {
         this.mAddressLine = mAddressLine;
-        addressLineTV.setText(mAddressLine);
+        mAddressLineTV.setText(mAddressLine);
     }
 
     public String getLatlng() {
-        return mLatlng;
+        return mLatLng;
     }
 
     public void setLatlng(String mLatlng) {
-        this.mLatlng = mLatlng;
-        latLngTV.setText(mLatlng);
+        this.mLatLng = mLatlng;
+        mLatLngTV.setText(mLatlng);
     }
 
-    public String getmDistance() {
+    public String getDistance() {
         return mDistance;
     }
 
-    public void setmDistance(String mDistance) {
+    public void setDistance(String mDistance) {
         this.mDistance = mDistance;
-        distanceTV.setText(mDistance);
+        mDistanceTV.setText(mDistance);
     }
 
-    public String getmOpenTime() {
+    public String getOpenTime() {
         return mOpenTime;
     }
 
-    public void setmOpenTime(String mOpenTime) {
+    public void setOpenTime(String mOpenTime) {
         this.mOpenTime = mOpenTime;
-        openTimeTV.setText(mOpenTime);
+        mOpenTimeTV.setText(mOpenTime);
     }
 
     public LocationInfoCard(Context context) {
@@ -87,14 +86,14 @@ public class LocationInfoCard extends LinearLayout {
 
     private void prepareView(Context context) {
 
-        rootView = inflate(context, R.layout.location_info_card_view, this);
-        locationTitleTV = (TextView) rootView.findViewById(R.id.location_title);
-        addressLineTV = (TextView) rootView.findViewById(R.id.address_line);
-        latLngTV = (TextView) rootView.findViewById(R.id.lat_lng);
-        distanceTV = (TextView) rootView.findViewById(R.id.distance);
-        openTimeTV = (TextView) rootView.findViewById(R.id.open_time);
-        selectButton = (Button) rootView.findViewById(R.id.select_button);
-        selectButton.setOnClickListener(new OnClickListener() {
+        mRootView = inflate(context, R.layout.location_info_card_view, this);
+        mLocationTitleTV = (TextView) mRootView.findViewById(R.id.location_title);
+        mAddressLineTV = (TextView) mRootView.findViewById(R.id.address_line);
+        mLatLngTV = (TextView) mRootView.findViewById(R.id.lat_lng);
+        mDistanceTV = (TextView) mRootView.findViewById(R.id.distance);
+        mOpenTimeTV = (TextView) mRootView.findViewById(R.id.open_time);
+        mSelectButton = (Button) mRootView.findViewById(R.id.select_button);
+        mSelectButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
 
