@@ -69,13 +69,17 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mFloatingActionMenu.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onMapLongClick(LocationDetail locationDetail) {
+    private void bindLocationDataToView(LocationDetail locationDetail) {
         mLocationInfoCard.setLocationTitle(locationDetail.getLocationTitle());
         mLocationInfoCard.setAddressLine(locationDetail.getAddressLine());
         mLocationInfoCard.setLatlng(locationDetail.getLat() + " , " + locationDetail.getLng());
         mLocationInfoCard.setDistance(locationDetail.getDistance() + " " + "AWAY");
         mLocationInfoCard.setOpenTime("11 AM to 10:20 PM");
+    }
+
+    @Override
+    public void onMapLongClick(LocationDetail locationDetail) {
+        bindLocationDataToView(locationDetail);
         showLocationInfoCard();
     }
 

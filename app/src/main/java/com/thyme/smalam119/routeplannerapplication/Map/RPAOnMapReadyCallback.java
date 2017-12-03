@@ -59,16 +59,21 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
             List<Address> addressList = geocoder.getFromLocation(latitude, longitude, 1);
             if (addressList != null && addressList.size() > 0) {
                 Address address = addressList.get(0);
-                locationDetail.setAddressLine(address.getAddressLine(0));
-                locationDetail.setLocationTitle(address.getSubLocality());
-                locationDetail.setLat(String.valueOf(address.getLatitude()));
-                locationDetail.setLng(String.valueOf(address.getLongitude()));
-                locationDetail.setDistance("1.5 MILES");
+                LocationDetail locationDetail = prepareLocationDetailModel(address);
                 onMapInteractionCallBack.onMapLongClick(locationDetail);
             }
 
         } catch(IOException e) {
 
         }
+    }
+
+    private LocationDetail prepareLocationDetailModel(Address address) {
+        locationDetail.setAddressLine(address.getAddressLine(0));
+        locationDetail.setLocationTitle(address.getSubLocality());
+        locationDetail.setLat(String.valueOf(address.getLatitude()));
+        locationDetail.setLng(String.valueOf(address.getLongitude()));
+        locationDetail.setDistance("1.5 MILES");
+        return locationDetail;
     }
 }
