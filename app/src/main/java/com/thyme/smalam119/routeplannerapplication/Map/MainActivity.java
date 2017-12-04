@@ -1,12 +1,15 @@
 package com.thyme.smalam119.routeplannerapplication.Map;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.thyme.smalam119.routeplannerapplication.CustomeView.LocationInfoCard;
+import com.thyme.smalam119.routeplannerapplication.CustomView.LocationInfoCard;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
 
@@ -17,6 +20,10 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     private FloatingActionButton mNotificationActionButton;
     private LocationInfoCard mLocationInfoCard;
     private FloatingActionMenu mFloatingActionMenu;
+    private TextView mNotificationCountTV;
+    private ImageView mNotificationMarkerImage;
+
+    private int notificationCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
 
     private void prepareView() {
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.location_notification_label);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
+                | ActionBar.DISPLAY_SHOW_HOME);
+
         mFloatingActionMenu = (FloatingActionMenu) findViewById(R.id.floating_menu);
 
         mProfileActionButton = (FloatingActionButton) findViewById(R.id.profile_action_button);
@@ -54,6 +66,17 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
 
         mLocationInfoCard = (LocationInfoCard) findViewById(R.id.location_info);
         mLocationInfoCard.setVisibility(View.GONE);
+        mNotificationCountTV = (TextView) findViewById(R.id.notification_count);
+        mNotificationMarkerImage = (ImageView) findViewById(R.id.marker_image);
+
+        mLocationInfoCard.getButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mNotificationMarkerImage.setImageResource(R.drawable.marker);
+                notificationCount++;
+                mNotificationCountTV.setText(notificationCount + "");
+            }
+        });
 
         mOnMapReadyCallback.onMapInteractionCallBack = this;
 

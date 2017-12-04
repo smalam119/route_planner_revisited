@@ -1,10 +1,8 @@
 package com.thyme.smalam119.routeplannerapplication.Utils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Build;
 
 /**
  * Created by smalam119 on 12/3/17.
@@ -12,21 +10,29 @@ import android.os.Build;
 
 public class Alerts {
 
-    public static void simpleAlert(final Activity activity) {
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(activity, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(activity);
-        }
-
-        builder.setTitle("No Internet Found!!!")
-                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        activity.finish();
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+    public static void simpleAlert(final Activity activity, String title, String buttonText) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(title);
+        builder.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                activity.finish();
+            }
+        });
+        builder.show();
     }
+
+    public static void simpleAlertWithMessage(final Activity activity, String title, String message, String buttonText) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.show();
+    }
+
+
 }

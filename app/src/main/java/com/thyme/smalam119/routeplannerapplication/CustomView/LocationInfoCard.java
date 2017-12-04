@@ -1,4 +1,4 @@
-package com.thyme.smalam119.routeplannerapplication.CustomeView;
+package com.thyme.smalam119.routeplannerapplication.CustomView;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -28,6 +28,16 @@ public class LocationInfoCard extends LinearLayout {
     private TextView mDistanceTV;
     private TextView mOpenTimeTV;
     private Button mSelectButton;
+
+    public LocationInfoCard(Context context) {
+        super(context);
+        prepareView(context);
+    }
+
+    public LocationInfoCard(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        prepareView(context);
+    }
 
     public String getmLocationTitle() {
         return mLocationTitle;
@@ -74,14 +84,8 @@ public class LocationInfoCard extends LinearLayout {
         mOpenTimeTV.setText(mOpenTime);
     }
 
-    public LocationInfoCard(Context context) {
-        super(context);
-        prepareView(context);
-    }
-
-    public LocationInfoCard(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        prepareView(context);
+    public Button getButton() {
+        return mSelectButton;
     }
 
     private void prepareView(Context context) {

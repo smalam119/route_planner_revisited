@@ -18,11 +18,11 @@ import com.thyme.smalam119.routeplannerapplication.Utils.SharedPrefUtils;
 
 public class RPAFacebookCallBack implements FacebookCallback<LoginResult> {
 
-    Activity activity;
+    private Activity mActivity;
     SharedPrefUtils sharedPrefUtils;
 
     public RPAFacebookCallBack(Activity activity) {
-        this.activity = activity;
+        this.mActivity = activity;
         sharedPrefUtils = new SharedPrefUtils(activity);
     }
 
@@ -32,7 +32,8 @@ public class RPAFacebookCallBack implements FacebookCallback<LoginResult> {
         AccessToken accessToken = loginResult.getAccessToken();
         sharedPrefUtils.saveAccessToken(accessToken.getToken());
         makeGraphRequest(accessToken);
-        activity.startActivity(new Intent(activity, MainActivity.class));
+        mActivity.startActivity(new Intent(mActivity, MainActivity.class));
+        mActivity.finish();
     }
 
     @Override
@@ -47,7 +48,7 @@ public class RPAFacebookCallBack implements FacebookCallback<LoginResult> {
     }
 
     private void makeGraphRequest(AccessToken accessToken) {
-        GraphRequest graphRequest = GraphRequest.newMeRequest(accessToken,new RPAGraphRequest(activity));
+        GraphRequest graphRequest = GraphRequest.newMeRequest(accessToken,new RPAGraphRequest(mActivity));
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id,first_name,last_name,email,gender");
         graphRequest.setParameters(parameters);

@@ -15,13 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.thyme.smalam119.routeplannerapplication.CustomeView.LocationInfoCard
+    <com.thyme.smalam119.routeplannerapplication.CustomView.LocationInfoCard
         android:id="@+id/location_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true">
-    </com.thyme.smalam119.routeplannerapplication.CustomeView.LocationInfoCard>
+    </com.thyme.smalam119.routeplannerapplication.CustomView.LocationInfoCard>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/floating_menu"

@@ -1,16 +1,12 @@
 package com.thyme.smalam119.routeplannerapplication.Login;
 
-import android.Manifest;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -52,7 +48,6 @@ public class LoginActivity extends RuntimePermissionsActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         prepareView();
-        LoginActivity.super.checkPermission();
         initializeUser();
     }
 
@@ -132,9 +127,10 @@ public class LoginActivity extends RuntimePermissionsActivity {
 
     private void initializeUser() {
         if(HandyFunctions.isConnectedWithNetwork(this)) {
+            LoginActivity.super.checkPermission();
             checkExistingUser();
         } else {
-            Alerts.simpleAlert(this);
+            Alerts.simpleAlert(this,"No Internet Found!!!","Okay");
         }
     }
 

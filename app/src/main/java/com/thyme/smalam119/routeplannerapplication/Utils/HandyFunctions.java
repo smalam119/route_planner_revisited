@@ -17,4 +17,11 @@ public class HandyFunctions {
         boolean isConnected = networkInfo != null && networkInfo.isConnected();
         return isConnected;
     }
+
+    public static String getFirstCharacter(String s) {
+        if(s == null) {
+            return "U";
+        }
+        return s.substring(0,1);
+    }
 }
