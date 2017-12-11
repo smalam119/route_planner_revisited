@@ -19,13 +19,13 @@ import com.thyme.smalam119.routeplannerapplication.Utils.BasicProgressBar;
  * Created by smalam119 on 11/25/17.
  */
 
-public class FirebaseUtils {
+public class FireBaseAuthUtils {
 
     public FirebaseAuth mAuth;
     private Activity mActivity;
     private BasicProgressBar mBasicProgressBar;
 
-    public FirebaseUtils(Activity activity) {
+    public FireBaseAuthUtils(Activity activity) {
         this.mActivity = activity;
         mAuth = FirebaseAuth.getInstance();
         mBasicProgressBar = new BasicProgressBar(activity,"Loading");

@@ -3,7 +3,7 @@
     package="com.thyme.smalam119.routeplannerapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".Application.App"
@@ -13,12 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Map.MainActivity"></activity>
+        <activity android:name=".Map.MainActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/GOOGLE_MAPS_API_KEY" />
@@ -27,7 +26,6 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -40,21 +38,20 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Login.LoginActivity"
             android:theme="@style/AppThemeLogin">
+        </activity>
+        <activity
+            android:name=".Signup.SignUpActivity"
+            android:theme="@style/AppThemeLogin"></activity>
+        <activity android:name=".Map.FireBaseDBTestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Signup.SignUpActivity"
-            android:theme="@style/AppThemeLogin">
-        </activity>
-
     </application>
 
 </manifest>
