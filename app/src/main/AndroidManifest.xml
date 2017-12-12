@@ -41,15 +41,17 @@
         <activity
             android:name=".Login.LoginActivity"
             android:theme="@style/AppThemeLogin">
+        </activity>
+        <activity
+            android:name=".Signup.SignUpActivity"
+            android:theme="@style/AppThemeLogin"></activity>
+        <activity android:name=".Map.FireBaseDBTestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Signup.SignUpActivity"
-            android:theme="@style/AppThemeLogin"></activity>
         <activity android:name=".LocationList.LocationListActivity"></activity>
     </application>
 

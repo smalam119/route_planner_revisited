@@ -18,7 +18,7 @@ import com.thyme.smalam119.routeplannerapplication.Signup.SignUpActivity;
 import com.thyme.smalam119.routeplannerapplication.Utils.Alerts;
 import com.thyme.smalam119.routeplannerapplication.Utils.Facebook.RPAFacebookAccessTokenTracker;
 import com.thyme.smalam119.routeplannerapplication.Utils.Facebook.RPAFacebookCallBack;
-import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FirebaseUtils;
+import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FireBaseAuthUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
 import com.thyme.smalam119.routeplannerapplication.Utils.Permission.RuntimePermissionsActivity;
 import com.thyme.smalam119.routeplannerapplication.Utils.SharedPrefUtils;
@@ -40,7 +40,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
 
     //utils
     private SharedPrefUtils mSharedPrefUtils;
-    private FirebaseUtils mFirebaseUtils;
+    private FireBaseAuthUtils mFirebaseUtils;
     private Validations mValidations;
 
     @Override
@@ -106,7 +106,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
 
     private void prepareUtils() {
         mSharedPrefUtils = new SharedPrefUtils(this);
-        mFirebaseUtils = new FirebaseUtils(this);
+        mFirebaseUtils = new FireBaseAuthUtils(this);
         mValidations = new Validations();
     }
 

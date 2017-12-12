@@ -7,12 +7,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.thyme.smalam119.routeplannerapplication.R;
-import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FirebaseUtils;
+import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FireBaseAuthUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.Validations;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private FirebaseUtils mFirebaseUtils;
+    private FireBaseAuthUtils mFirebaseUtils;
 
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
@@ -51,7 +51,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void prepareUtils() {
-        mFirebaseUtils = new FirebaseUtils(this);
+        mFirebaseUtils = new FireBaseAuthUtils(this);
         mValidations = new Validations();
     }
 }

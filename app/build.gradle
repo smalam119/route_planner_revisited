@@ -44,6 +44,9 @@ dependencies {
 
     // CardView
     compile 'com.android.support:cardview-v7:23.3.+'
+
+    //firebase db
+    compile 'com.google.firebase:firebase-database:10.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
