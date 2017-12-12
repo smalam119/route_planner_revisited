@@ -16,6 +16,12 @@ public class Alerts {
         builder.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                HandyFunctions.gotoSystemSettings(activity);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 activity.finish();
             }
         });

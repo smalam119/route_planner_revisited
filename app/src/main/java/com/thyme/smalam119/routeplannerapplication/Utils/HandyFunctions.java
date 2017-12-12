@@ -1,6 +1,8 @@
 package com.thyme.smalam119.routeplannerapplication.Utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -23,5 +25,11 @@ public class HandyFunctions {
             return "U";
         }
         return s.substring(0,1);
+    }
+
+    public static void gotoSystemSettings(Activity activity) {
+        Intent dialogIntent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(dialogIntent);
     }
 }

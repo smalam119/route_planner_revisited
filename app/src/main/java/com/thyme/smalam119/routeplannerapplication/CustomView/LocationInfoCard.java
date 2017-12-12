@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
 
 /**
@@ -17,7 +18,8 @@ public class LocationInfoCard extends LinearLayout {
 
     private String mLocationTitle;
     private String mAddressLine;
-    private String mLatLng;
+    private String mLat;
+    private String mLng;
     private String mDistance;
     private String mOpenTime;
 
@@ -57,12 +59,24 @@ public class LocationInfoCard extends LinearLayout {
         mAddressLineTV.setText(mAddressLine);
     }
 
-    public String getLatlng() {
-        return mLatLng;
+    public String getLng() {
+        return mLng;
+    }
+
+    public void setLng(String mLng) {
+        this.mLng = mLng;
+
+    }
+
+    public void setLat(String lat) {
+        this.mLat = lat;
+    }
+
+    public String getLat() {
+        return mLat;
     }
 
     public void setLatlng(String mLatlng) {
-        this.mLatLng = mLatlng;
         mLatLngTV.setText(mLatlng);
     }
 
@@ -84,8 +98,18 @@ public class LocationInfoCard extends LinearLayout {
         mOpenTimeTV.setText(mOpenTime);
     }
 
-    public Button getButton() {
+    public Button getSelectButton() {
         return mSelectButton;
+    }
+
+    public LocationDetail getLocationData() {
+        LocationDetail locationDetail = new LocationDetail();
+        locationDetail.setLocationTitle(getmLocationTitle());
+        locationDetail.setAddressLine(getAddressLine());
+        locationDetail.setLat(getLat());
+        locationDetail.setLng(getLng());
+        locationDetail.setDistance("");
+        return locationDetail;
     }
 
     private void prepareView(Context context) {

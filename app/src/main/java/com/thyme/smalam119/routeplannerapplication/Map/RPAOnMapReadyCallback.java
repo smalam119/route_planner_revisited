@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.location.Address;
 import android.location.Geocoder;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,9 +41,6 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         final LatLng dhaka = new LatLng(23.8103, 90.4125);
-        googleMap.addMarker(new MarkerOptions().position(dhaka)
-                .title("Marker in Dhaka")
-                .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon("D"))));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(dhaka));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dhaka, 14.0f));
         googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -53,6 +51,8 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
                 googleMap.addMarker(new MarkerOptions().position(latLng)
                         .title("Marker in Dhaka")
                         .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName))));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(dhaka));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dhaka, 14.0f));
             }
         });
 
@@ -81,7 +81,12 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
 
     private LocationDetail prepareLocationDetailModel(Address address) {
         locationDetail.setAddressLine(address.getAddressLine(0));
-        locationDetail.setLocationTitle(address.getSubLocality());
+        String subLocality = address.getSubLocality();
+        if(subLocality == null) {
+            locationDetail.setLocationTitle("Unknown");
+        } else {
+            locationDetail.setLocationTitle(address.getSubLocality());
+        }
         locationDetail.setLat(String.valueOf(address.getLatitude()));
         locationDetail.setLng(String.valueOf(address.getLongitude()));
         locationDetail.setDistance("1.5 MILES");

@@ -1,10 +1,12 @@
 package com.thyme.smalam119.routeplannerapplication.Model;
 
+import java.io.Serializable;
+
 /**
  * Created by smalam119 on 12/2/17.
  */
 
-public class LocationDetail {
+public class LocationDetail implements Serializable {
     private String locationTitle;
     private String addressLine;
     private String lat;

@@ -1,8 +1,10 @@
 package com.thyme.smalam119.routeplannerapplication.Map;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,8 +12,12 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.thyme.smalam119.routeplannerapplication.CustomView.LocationInfoCard;
+import com.thyme.smalam119.routeplannerapplication.LocationList.LocationListActivity;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
+import com.thyme.smalam119.routeplannerapplication.Utils.Cons;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnMapInteractionCallBack {
 
@@ -22,8 +28,9 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     private FloatingActionMenu mFloatingActionMenu;
     private TextView mNotificationCountTV;
     private ImageView mNotificationMarkerImage;
-
     private int notificationCount = 0;
+    private ArrayList<LocationDetail> locationDetails;
+    private LocationDetail mGlobalLocationDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     }
 
     private void prepareView() {
+
+        locationDetails = new ArrayList<>();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setCustomView(R.layout.location_notification_label);
@@ -68,12 +77,22 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mLocationInfoCard.setVisibility(View.GONE);
         mNotificationCountTV = (TextView) findViewById(R.id.notification_count);
         mNotificationMarkerImage = (ImageView) findViewById(R.id.marker_image);
+        mNotificationMarkerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LocationListActivity.class);
+                intent.putExtra(Cons.KEY_EXTRA_LOCATION_ARRAY_LIST,locationDetails);
+                startActivity(intent);
+            }
+        });
 
-        mLocationInfoCard.getButton().setOnClickListener(new View.OnClickListener() {
+        mLocationInfoCard.getSelectButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mNotificationMarkerImage.setImageResource(R.drawable.marker);
-                notificationCount++;
+                LocationDetail locationDetail = mLocationInfoCard.getLocationData();
+                locationDetails.add(locationDetail);
+                notificationCount = locationDetails.size();
                 mNotificationCountTV.setText(notificationCount + "");
             }
         });
@@ -98,12 +117,17 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mLocationInfoCard.setLatlng(locationDetail.getLat() + " , " + locationDetail.getLng());
         mLocationInfoCard.setDistance(locationDetail.getDistance() + " " + "AWAY");
         mLocationInfoCard.setOpenTime("11 AM to 10:20 PM");
+        mLocationInfoCard.setLat(locationDetail.getLat());
+        mLocationInfoCard.setLng(locationDetail.getLng());
     }
 
     @Override
     public void onMapLongClick(LocationDetail locationDetail) {
         bindLocationDataToView(locationDetail);
         showLocationInfoCard();
+        mGlobalLocationDetail = locationDetail;
+        Log.d("lld",mGlobalLocationDetail.getAddressLine());
+
     }
 
     @Override

@@ -115,6 +115,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
 
         } else {
             startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
 
         if(mFirebaseUtils.getCurrentUser() == null) {
@@ -122,6 +123,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
         } else {
             startActivity(new Intent(this, MainActivity.class));
             Toast.makeText(this, "welcome" + mFirebaseUtils.getCurrentUser().getEmail(),Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
@@ -130,7 +132,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
             LoginActivity.super.checkPermission();
             checkExistingUser();
         } else {
-            Alerts.simpleAlert(this,"No Internet Found!!!","Okay");
+            Alerts.simpleAlert(this,"No Internet Found!!!","Settings");
         }
     }
 
