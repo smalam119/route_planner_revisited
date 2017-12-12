@@ -7,8 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.location.Address;
 import android.location.Geocoder;
-import android.util.Log;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,8 +16,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
 import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,6 +30,7 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
     public OnMapInteractionCallBack onMapInteractionCallBack;
     private Activity mActivity;
     private LocationDetail locationDetail;
+    public ArrayList<LocationDetail> selectedLocationDetail = new ArrayList<>();
 
     public RPAOnMapReadyCallback(Activity activity) {
         this.mActivity = activity;
@@ -46,6 +45,7 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
         googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
+                addSelectedMarkers(googleMap);
                 getLocationDetail(latLng.latitude,latLng.longitude,mActivity);
                 String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
                 googleMap.addMarker(new MarkerOptions().position(latLng)
@@ -53,6 +53,7 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
                         .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName))));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(dhaka));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dhaka, 14.0f));
+
             }
         });
 
@@ -111,5 +112,16 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
         canvas.drawText(alphabet,40,60,paintText);
 
         return bmp;
+    }
+
+    private void addSelectedMarkers(GoogleMap googleMap){
+        googleMap.clear();
+        for(LocationDetail locationDetail : selectedLocationDetail) {
+            String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
+            LatLng latLngSel = new LatLng(Double.valueOf(locationDetail.getLat()),Double.valueOf(locationDetail.getLng()));
+            googleMap.addMarker(new MarkerOptions().position(latLngSel)
+                    .title("Marker")
+                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName))));
+        }
     }
 }

@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
                 locationDetails.add(locationDetail);
                 notificationCount = locationDetails.size();
                 mNotificationCountTV.setText(notificationCount + "");
+                mOnMapReadyCallback.selectedLocationDetail.add(locationDetail);
             }
         });
 

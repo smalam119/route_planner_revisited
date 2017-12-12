@@ -13,8 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Map.MainActivity" />
-
+        <activity android:name=".Map.MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -46,13 +50,8 @@
             android:name=".Signup.SignUpActivity"
             android:theme="@style/AppThemeLogin"></activity>
         <activity android:name=".Map.FireBaseDBTestActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".LocationList.LocationListActivity"></activity>
+        <activity android:name=".LocationList.LocationListActivity"/>
     </application>
 
 </manifest>
