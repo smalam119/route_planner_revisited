@@ -47,6 +47,22 @@ dependencies {
 
     //firebase db
     compile 'com.google.firebase:firebase-database:10.2.0'
+
+    //gson
+    compile 'com.google.code.gson:gson:2.8.2'
+
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support') {
+                if (!requested.name.startsWith("multidex")) {
+                    details.useVersion '26.1.0'
+                }
+            }
+        }
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+

@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
 
@@ -127,6 +126,5 @@ public class LocationInfoCard extends LinearLayout {
 
             }
         });
-
     }
 }

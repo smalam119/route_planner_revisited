@@ -15,8 +15,7 @@ import com.thyme.smalam119.routeplannerapplication.CustomView.LocationInfoCard;
 import com.thyme.smalam119.routeplannerapplication.LocationList.LocationListActivity;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
-import com.thyme.smalam119.routeplannerapplication.Utils.Cons;
-
+import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnMapInteractionCallBack {
@@ -31,12 +30,14 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     private int notificationCount = 0;
     private ArrayList<LocationDetail> locationDetails;
     private LocationDetail mGlobalLocationDetail;
+    private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mOnMapReadyCallback = new RPAOnMapReadyCallback(this);
+        mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(mOnMapReadyCallback);
@@ -49,9 +50,11 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     }
 
     private void prepareView() {
-
-        locationDetails = new ArrayList<>();
-
+        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
+            locationDetails = new ArrayList<>();
+        } else {
+            locationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
+        }
         ActionBar actionBar = getSupportActionBar();
         actionBar.setCustomView(R.layout.location_notification_label);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
@@ -81,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LocationListActivity.class);
-                intent.putExtra(Cons.KEY_EXTRA_LOCATION_ARRAY_LIST,locationDetails);
+                mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
                 startActivity(intent);
             }
         });
@@ -92,11 +95,19 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
                 mNotificationMarkerImage.setImageResource(R.drawable.marker);
                 LocationDetail locationDetail = mLocationInfoCard.getLocationData();
                 locationDetails.add(locationDetail);
-                notificationCount = locationDetails.size();
+                mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
+                notificationCount = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size();
                 mNotificationCountTV.setText(notificationCount + "");
-                mOnMapReadyCallback.selectedLocationDetail.add(locationDetail);
             }
         });
+
+        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
+            mNotificationCountTV.setText(0 + "");
+        } else {
+            mNotificationMarkerImage.setImageResource(R.drawable.marker);
+            notificationCount = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size();
+            mNotificationCountTV.setText(notificationCount + "");
+        }
 
         mOnMapReadyCallback.onMapInteractionCallBack = this;
 

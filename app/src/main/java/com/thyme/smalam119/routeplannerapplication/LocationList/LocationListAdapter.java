@@ -6,20 +6,24 @@ package com.thyme.smalam119.routeplannerapplication.LocationList;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
-import java.util.List;
+import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
+import java.util.ArrayList;
 
 public class LocationListAdapter extends RecyclerView.Adapter<LocationListViewHolder> {
     private Context mContext;
-    private List<LocationDetail> mLocationDetailList;
+    private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
+    ArrayList<LocationDetail> locationDetails;
 
-    public LocationListAdapter(Context context, List<LocationDetail> list) {
+    public LocationListAdapter(Context context) {
         this.mContext = context;
-        this.mLocationDetailList = list;
+        mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(context);
+        locationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
     }
 
     @Override
@@ -31,16 +35,27 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListViewHo
     }
 
     @Override
-    public void onBindViewHolder(LocationListViewHolder holder, int position) {
-        LocationDetail locationDetail = mLocationDetailList.get(position);
+    public void onBindViewHolder(final LocationListViewHolder holder, final int position) {
+        LocationDetail locationDetail = locationDetails.get(position);
 
         holder.locationTitleTV.setText(locationDetail.getLocationTitle());
         holder.addressLineTV.setText(locationDetail.getAddressLine());
         holder.latlngTV.setText(locationDetail.getLat() + ", " + locationDetail.getLng());
+        holder.crossButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("cross_button",position + " clicked");
+                locationDetails.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position,locationDetails.size());
+                mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
+
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return mLocationDetailList.size();
+        return locationDetails.size();
     }
 }

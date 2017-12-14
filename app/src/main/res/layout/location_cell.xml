@@ -26,6 +26,13 @@
                 android:layout_marginTop="@dimen/margin_8dp"
                 android:layout_marginBottom="@dimen/margin_8dp"/>
 
+            <ImageButton
+                android:id="@+id/cross_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cross"
+                android:layout_alignParentRight="true"/>
+
             <View
                 android:id="@+id/straight_line"
                 android:layout_width="match_parent"
