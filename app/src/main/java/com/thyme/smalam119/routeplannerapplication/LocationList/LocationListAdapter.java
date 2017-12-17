@@ -39,6 +39,7 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListViewHo
         LocationDetail locationDetail = locationDetails.get(position);
 
         holder.locationTitleTV.setText(locationDetail.getLocationTitle());
+        holder.locationTitleTV.setTextColor(locationDetail.getIdentifierColor());
         holder.addressLineTV.setText(locationDetail.getAddressLine());
         holder.latlngTV.setText(locationDetail.getLat() + ", " + locationDetail.getLng());
         holder.crossButton.setOnClickListener(new View.OnClickListener() {

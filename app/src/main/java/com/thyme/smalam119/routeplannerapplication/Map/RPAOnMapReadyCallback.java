@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
+import com.thyme.smalam119.routeplannerapplication.Utils.Cons;
 import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
 import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
                 String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
                 googleMap.addMarker(new MarkerOptions().position(latLng)
                         .title("Marker in Dhaka")
-                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
             }
         });
 
@@ -89,15 +90,16 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
         locationDetail.setLat(String.valueOf(address.getLatitude()));
         locationDetail.setLng(String.valueOf(address.getLongitude()));
         locationDetail.setDistance("1.5 MILES");
+        locationDetail.setIdentifierColor(HandyFunctions.getRandomColor());
         return locationDetail;
     }
 
-    private Bitmap getMarkerIcon(String alphabet) {
+    private Bitmap getMarkerIcon(String alphabet, int color) {
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         Bitmap bmp = Bitmap.createBitmap(100, 100, conf);
 
         Paint paintCircle = new Paint();
-        paintCircle.setColor(mActivity.getResources().getColor(R.color.yellow));
+        paintCircle.setColor(color);
         paintCircle.setStyle(Paint.Style.FILL);
 
         Paint paintText = new Paint();
@@ -114,22 +116,21 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
 
     private void setupMap(GoogleMap googleMap) {
         googleMap.clear();
+        googleMap.setMinZoomPreference(13.0f);
+        googleMap.setMaxZoomPreference(16.0f);
+        googleMap.setLatLngBoundsForCameraTarget(Cons.DHAKA_BOUND);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Cons.DHAKA_LATLNG));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Cons.DHAKA_LATLNG, 14.0f));
 
         if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
-            final LatLng dhaka = new LatLng(23.8103, 90.4125);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(dhaka));
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dhaka, 14.0f));
-            Log.d("map","location null");
+
         } else {
-            final LatLng dhaka = new LatLng(23.8103, 90.4125);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(dhaka));
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dhaka, 14.0f));
             for(LocationDetail locationDetail : mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref()) {
                 String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
                 LatLng latLngSel = new LatLng(Double.valueOf(locationDetail.getLat()),Double.valueOf(locationDetail.getLng()));
                 googleMap.addMarker(new MarkerOptions().position(latLngSel)
                         .title("Marker")
-                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
             }
         }
     }

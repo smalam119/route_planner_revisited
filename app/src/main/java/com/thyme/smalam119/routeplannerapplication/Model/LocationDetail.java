@@ -12,6 +12,7 @@ public class LocationDetail implements Serializable {
     private String lat;
     private String lng;
     private String distance;
+    private int identifierColor;
 
     public String getLocationTitle() {
         return locationTitle;
@@ -51,5 +52,13 @@ public class LocationDetail implements Serializable {
 
     public void setDistance(String distance) {
         this.distance = distance;
+    }
+
+    public int getIdentifierColor() {
+        return identifierColor;
+    }
+
+    public void setIdentifierColor(int identifierColor) {
+        this.identifierColor = identifierColor;
     }
 }

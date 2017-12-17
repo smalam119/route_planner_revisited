@@ -21,6 +21,7 @@ public class LocationInfoCard extends LinearLayout {
     private String mLng;
     private String mDistance;
     private String mOpenTime;
+    private int identifierColor;
 
     private View mRootView;
     private TextView mLocationTitleTV;
@@ -97,6 +98,14 @@ public class LocationInfoCard extends LinearLayout {
         mOpenTimeTV.setText(mOpenTime);
     }
 
+    public int getIdentifierColor() {
+        return identifierColor;
+    }
+
+    public void setIdentifierColor(int identifierColor) {
+        this.identifierColor = identifierColor;
+    }
+
     public Button getSelectButton() {
         return mSelectButton;
     }
@@ -108,6 +117,7 @@ public class LocationInfoCard extends LinearLayout {
         locationDetail.setLat(getLat());
         locationDetail.setLng(getLng());
         locationDetail.setDistance("");
+        locationDetail.setIdentifierColor(getIdentifierColor());
         return locationDetail;
     }
 

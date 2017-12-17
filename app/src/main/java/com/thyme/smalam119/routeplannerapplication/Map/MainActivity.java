@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mLocationInfoCard.setOpenTime("11 AM to 10:20 PM");
         mLocationInfoCard.setLat(locationDetail.getLat());
         mLocationInfoCard.setLng(locationDetail.getLng());
+        mLocationInfoCard.setIdentifierColor(locationDetail.getIdentifierColor());
     }
 
     @Override
