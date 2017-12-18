@@ -12,7 +12,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.thyme.smalam119.routeplannerapplication.Map.MainActivity;
+import com.thyme.smalam119.routeplannerapplication.Map.InputMap.MainActivity;
 import com.thyme.smalam119.routeplannerapplication.R;
 import com.thyme.smalam119.routeplannerapplication.Signup.SignUpActivity;
 import com.thyme.smalam119.routeplannerapplication.Utils.Alerts;

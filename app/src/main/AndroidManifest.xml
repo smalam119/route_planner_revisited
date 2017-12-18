@@ -13,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Map.MainActivity" >
-        </activity>
+        <activity android:name=".Map.InputMap.MainActivity"
+            android:launchMode="standard"></activity>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -41,17 +42,18 @@
         <activity
             android:name=".Login.LoginActivity"
             android:theme="@style/AppThemeLogin">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Signup.SignUpActivity"
-            android:theme="@style/AppThemeLogin"></activity>
-        <activity android:name=".Map.FireBaseDBTestActivity">
-        </activity>
-        <activity android:name=".LocationList.LocationListActivity"/>
+            android:theme="@style/AppThemeLogin" />
+        <activity android:name=".Map.FireBaseDBTestActivity"></activity>
+        <activity android:name=".LocationList.LocationListActivity" />
+        <activity android:name=".Map.ResultMap.ResultMapActivity"></activity>
     </application>
 
 </manifest>

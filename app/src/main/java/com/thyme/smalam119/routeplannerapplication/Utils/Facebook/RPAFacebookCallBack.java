@@ -9,7 +9,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.login.LoginResult;
-import com.thyme.smalam119.routeplannerapplication.Map.MainActivity;
+import com.thyme.smalam119.routeplannerapplication.Map.InputMap.MainActivity;
 
 /**
  * Created by smalam119 on 11/24/17.

@@ -15,4 +15,5 @@
     <string name="distance_placeholder">1.6 MILES AWAY</string>
     <string name="open_time_placeholder">OPEN 10:30 AM - 12:30 AM</string>
     <string name="lat_lng_placeholder">24°22'20.6"N 88°36'35.6"E</string>
+    <string name="Optimize">Optimize</string>
 </resources>

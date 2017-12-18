@@ -6,8 +6,19 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/location_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/optimize_button"
         android:clipToPadding="false"
         android:scrollbars="vertical" />
+
+    <Button
+        android:id="@+id/optimize_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Optimize"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+         />
     
 </RelativeLayout>

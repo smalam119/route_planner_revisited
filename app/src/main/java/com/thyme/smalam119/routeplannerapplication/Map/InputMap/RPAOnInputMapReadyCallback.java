@@ -1,4 +1,4 @@
-package com.thyme.smalam119.routeplannerapplication.Map;
+package com.thyme.smalam119.routeplannerapplication.Map.InputMap;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,14 +27,14 @@ import java.util.Locale;
  * Created by smalam119 on 11/28/17.
  */
 
-public class RPAOnMapReadyCallback implements OnMapReadyCallback {
+public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
 
     public OnMapInteractionCallBack onMapInteractionCallBack;
     private Activity mActivity;
     private LocationDetail locationDetail;
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
 
-    public RPAOnMapReadyCallback(Activity activity) {
+    public RPAOnInputMapReadyCallback(Activity activity) {
         this.mActivity = activity;
         locationDetail = new LocationDetail();
         mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(activity);

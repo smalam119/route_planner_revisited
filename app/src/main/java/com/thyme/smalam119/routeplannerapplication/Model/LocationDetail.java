@@ -1,5 +1,7 @@
 package com.thyme.smalam119.routeplannerapplication.Model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 
 /**
@@ -60,5 +62,9 @@ public class LocationDetail implements Serializable {
 
     public void setIdentifierColor(int identifierColor) {
         this.identifierColor = identifierColor;
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(Double.parseDouble(getLat()),Double.parseDouble(getLng()));
     }
 }

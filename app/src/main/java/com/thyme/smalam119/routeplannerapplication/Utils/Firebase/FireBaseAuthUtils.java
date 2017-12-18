@@ -10,7 +10,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.thyme.smalam119.routeplannerapplication.Map.MainActivity;
+import com.thyme.smalam119.routeplannerapplication.Map.InputMap.MainActivity;
 import com.thyme.smalam119.routeplannerapplication.Utils.Alerts;
 import com.thyme.smalam119.routeplannerapplication.Utils.BasicProgressBar;
 

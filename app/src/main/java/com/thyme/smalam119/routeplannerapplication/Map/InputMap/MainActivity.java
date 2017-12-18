@@ -1,4 +1,4 @@
-package com.thyme.smalam119.routeplannerapplication.Map;
+package com.thyme.smalam119.routeplannerapplication.Map.InputMap;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnMapInteractionCallBack {
 
-    private RPAOnMapReadyCallback mOnMapReadyCallback;
+    private RPAOnInputMapReadyCallback mOnMapReadyCallback;
     private FloatingActionButton mProfileActionButton;
     private FloatingActionButton mNotificationActionButton;
     private LocationInfoCard mLocationInfoCard;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mOnMapReadyCallback = new RPAOnMapReadyCallback(this);
+        mOnMapReadyCallback = new RPAOnInputMapReadyCallback(this);
         mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
                 Intent intent = new Intent(MainActivity.this, LocationListActivity.class);
                 mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
                 startActivity(intent);
+                finish();
             }
         });
 
