@@ -15,7 +15,7 @@ import java.util.List;
 public class JsonParserForDirection {
 
     /** Receives a JSONObject and returns a list of lists containing latitude and longitude */
-    public List<List<HashMap<String,String>>> parse(JSONObject jObject){
+    public static List<List<HashMap<String,String>>> parse(JSONObject jObject){
 
         List<List<HashMap<String, String>>> routes = new ArrayList<List<HashMap<String,String>>>() ;
         JSONArray jRoutes = null;
@@ -84,7 +84,7 @@ public class JsonParserForDirection {
     /**
      * Method to decode polyline points
      **/
-    private List<LatLng> decodePoly(String encoded) {
+    public static List<LatLng> decodePoly(String encoded) {
 
         List<LatLng> poly = new ArrayList<LatLng>();
         int index = 0, len = encoded.length();

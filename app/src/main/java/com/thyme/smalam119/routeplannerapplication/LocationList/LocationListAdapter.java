@@ -20,10 +20,10 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListViewHo
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
     ArrayList<LocationDetail> locationDetails;
 
-    public LocationListAdapter(Context context) {
+    public LocationListAdapter(Context context, ArrayList<LocationDetail> locationDetails) {
         this.mContext = context;
         mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(context);
-        locationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
+        this.locationDetails = locationDetails;
     }
 
     @Override

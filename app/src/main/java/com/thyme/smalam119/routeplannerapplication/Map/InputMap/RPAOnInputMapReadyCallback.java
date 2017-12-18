@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Vibrator;
 import android.util.Log;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,11 +34,13 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
     private Activity mActivity;
     private LocationDetail locationDetail;
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
+    private Vibrator mVibrate;
 
     public RPAOnInputMapReadyCallback(Activity activity) {
         this.mActivity = activity;
         locationDetail = new LocationDetail();
         mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(activity);
+        mVibrate = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @Override
@@ -47,6 +50,7 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
         googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
+                mVibrate.vibrate(100);
                 setupMap(googleMap);
                 getLocationDetail(latLng.latitude,latLng.longitude,mActivity);
                 String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
