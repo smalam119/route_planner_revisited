@@ -5,7 +5,6 @@ import android.app.Activity;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.login.LoginManager;
-import com.thyme.smalam119.routeplannerapplication.Utils.SharedPrefUtils;
 
 /**
  * Created by smalam119 on 11/24/17.
@@ -14,18 +13,18 @@ import com.thyme.smalam119.routeplannerapplication.Utils.SharedPrefUtils;
 public class RPAFacebookAccessTokenTracker extends AccessTokenTracker {
 
     private Activity mActivity;
-    SharedPrefUtils sharedPrefUtils;
+    FBSharedPrefUtils FBSharedPrefUtils;
 
     public RPAFacebookAccessTokenTracker(Activity activity) {
         this.mActivity = activity;
-        sharedPrefUtils = new SharedPrefUtils(activity);
+        FBSharedPrefUtils = new FBSharedPrefUtils(activity);
     }
 
     @Override
     protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
         if (currentAccessToken == null){
             //User logged out
-            sharedPrefUtils.clearToken();
+            FBSharedPrefUtils.clearToken();
             LoginManager.getInstance().logOut();
         }
     }

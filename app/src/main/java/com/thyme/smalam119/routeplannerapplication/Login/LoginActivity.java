@@ -12,7 +12,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.thyme.smalam119.routeplannerapplication.Map.MainActivity;
+import com.thyme.smalam119.routeplannerapplication.Map.InputMap.MainActivity;
 import com.thyme.smalam119.routeplannerapplication.R;
 import com.thyme.smalam119.routeplannerapplication.Signup.SignUpActivity;
 import com.thyme.smalam119.routeplannerapplication.Utils.Alerts;
@@ -21,7 +21,7 @@ import com.thyme.smalam119.routeplannerapplication.Utils.Facebook.RPAFacebookCal
 import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FireBaseAuthUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
 import com.thyme.smalam119.routeplannerapplication.Utils.Permission.RuntimePermissionsActivity;
-import com.thyme.smalam119.routeplannerapplication.Utils.SharedPrefUtils;
+import com.thyme.smalam119.routeplannerapplication.Utils.Facebook.FBSharedPrefUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.Validations;
 
 public class LoginActivity extends RuntimePermissionsActivity {
@@ -39,7 +39,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
     private AccessTokenTracker mAccessTokenTracker;
 
     //utils
-    private SharedPrefUtils mSharedPrefUtils;
+    private FBSharedPrefUtils mFBSharedPrefUtils;
     private FireBaseAuthUtils mFirebaseUtils;
     private Validations mValidations;
 
@@ -105,16 +105,17 @@ public class LoginActivity extends RuntimePermissionsActivity {
     }
 
     private void prepareUtils() {
-        mSharedPrefUtils = new SharedPrefUtils(this);
+        mFBSharedPrefUtils = new FBSharedPrefUtils(this);
         mFirebaseUtils = new FireBaseAuthUtils(this);
         mValidations = new Validations();
     }
 
     private void checkExistingUser() {
-        if(mSharedPrefUtils.getToken() == null) {
+        if(mFBSharedPrefUtils.getToken() == null) {
 
         } else {
             startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
 
         if(mFirebaseUtils.getCurrentUser() == null) {
@@ -122,6 +123,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
         } else {
             startActivity(new Intent(this, MainActivity.class));
             Toast.makeText(this, "welcome" + mFirebaseUtils.getCurrentUser().getEmail(),Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
@@ -130,7 +132,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
             LoginActivity.super.checkPermission();
             checkExistingUser();
         } else {
-            Alerts.simpleAlert(this,"No Internet Found!!!","Okay");
+            Alerts.simpleAlert(this,"No Internet Found!!!","Settings");
         }
     }
 

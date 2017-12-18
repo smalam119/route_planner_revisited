@@ -9,8 +9,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.login.LoginResult;
-import com.thyme.smalam119.routeplannerapplication.Map.MainActivity;
-import com.thyme.smalam119.routeplannerapplication.Utils.SharedPrefUtils;
+import com.thyme.smalam119.routeplannerapplication.Map.InputMap.MainActivity;
 
 /**
  * Created by smalam119 on 11/24/17.
@@ -19,18 +18,18 @@ import com.thyme.smalam119.routeplannerapplication.Utils.SharedPrefUtils;
 public class RPAFacebookCallBack implements FacebookCallback<LoginResult> {
 
     private Activity mActivity;
-    SharedPrefUtils sharedPrefUtils;
+    FBSharedPrefUtils FBSharedPrefUtils;
 
     public RPAFacebookCallBack(Activity activity) {
         this.mActivity = activity;
-        sharedPrefUtils = new SharedPrefUtils(activity);
+        FBSharedPrefUtils = new FBSharedPrefUtils(activity);
     }
 
     @Override
     public void onSuccess(LoginResult loginResult) {
         Log.d("login success",loginResult.toString());
         AccessToken accessToken = loginResult.getAccessToken();
-        sharedPrefUtils.saveAccessToken(accessToken.getToken());
+        FBSharedPrefUtils.saveAccessToken(accessToken.getToken());
         makeGraphRequest(accessToken);
         mActivity.startActivity(new Intent(mActivity, MainActivity.class));
         mActivity.finish();
@@ -44,7 +43,7 @@ public class RPAFacebookCallBack implements FacebookCallback<LoginResult> {
     @Override
     public void onError(FacebookException error) {
         Log.d("login failed",error.toString());
-        sharedPrefUtils.clearToken();
+        FBSharedPrefUtils.clearToken();
     }
 
     private void makeGraphRequest(AccessToken accessToken) {

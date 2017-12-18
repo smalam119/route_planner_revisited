@@ -1,8 +1,10 @@
-package com.thyme.smalam119.routeplannerapplication.Map;
+package com.thyme.smalam119.routeplannerapplication.Map.InputMap;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,26 +12,32 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.thyme.smalam119.routeplannerapplication.CustomView.LocationInfoCard;
+import com.thyme.smalam119.routeplannerapplication.LocationList.LocationListActivity;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
+import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnMapInteractionCallBack {
 
-    private RPAOnMapReadyCallback mOnMapReadyCallback;
+    private RPAOnInputMapReadyCallback mOnMapReadyCallback;
     private FloatingActionButton mProfileActionButton;
     private FloatingActionButton mNotificationActionButton;
     private LocationInfoCard mLocationInfoCard;
     private FloatingActionMenu mFloatingActionMenu;
     private TextView mNotificationCountTV;
     private ImageView mNotificationMarkerImage;
-
     private int notificationCount = 0;
+    private ArrayList<LocationDetail> locationDetails;
+    private LocationDetail mGlobalLocationDetail;
+    private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mOnMapReadyCallback = new RPAOnMapReadyCallback(this);
+        mOnMapReadyCallback = new RPAOnInputMapReadyCallback(this);
+        mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(mOnMapReadyCallback);
@@ -42,7 +50,11 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     }
 
     private void prepareView() {
-
+        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
+            locationDetails = new ArrayList<>();
+        } else {
+            locationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
+        }
         ActionBar actionBar = getSupportActionBar();
         actionBar.setCustomView(R.layout.location_notification_label);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
@@ -68,15 +80,35 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mLocationInfoCard.setVisibility(View.GONE);
         mNotificationCountTV = (TextView) findViewById(R.id.notification_count);
         mNotificationMarkerImage = (ImageView) findViewById(R.id.marker_image);
+        mNotificationMarkerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LocationListActivity.class);
+                mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-        mLocationInfoCard.getButton().setOnClickListener(new View.OnClickListener() {
+        mLocationInfoCard.getSelectButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mNotificationMarkerImage.setImageResource(R.drawable.marker);
-                notificationCount++;
+                LocationDetail locationDetail = mLocationInfoCard.getLocationData();
+                locationDetails.add(locationDetail);
+                mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
+                notificationCount = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size();
                 mNotificationCountTV.setText(notificationCount + "");
             }
         });
+
+        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
+            mNotificationCountTV.setText(0 + "");
+        } else {
+            mNotificationMarkerImage.setImageResource(R.drawable.marker);
+            notificationCount = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size();
+            mNotificationCountTV.setText(notificationCount + "");
+        }
 
         mOnMapReadyCallback.onMapInteractionCallBack = this;
 
@@ -98,12 +130,18 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mLocationInfoCard.setLatlng(locationDetail.getLat() + " , " + locationDetail.getLng());
         mLocationInfoCard.setDistance(locationDetail.getDistance() + " " + "AWAY");
         mLocationInfoCard.setOpenTime("11 AM to 10:20 PM");
+        mLocationInfoCard.setLat(locationDetail.getLat());
+        mLocationInfoCard.setLng(locationDetail.getLng());
+        mLocationInfoCard.setIdentifierColor(locationDetail.getIdentifierColor());
     }
 
     @Override
     public void onMapLongClick(LocationDetail locationDetail) {
         bindLocationDataToView(locationDetail);
         showLocationInfoCard();
+        mGlobalLocationDetail = locationDetail;
+        Log.d("lld",mGlobalLocationDetail.getAddressLine());
+
     }
 
     @Override

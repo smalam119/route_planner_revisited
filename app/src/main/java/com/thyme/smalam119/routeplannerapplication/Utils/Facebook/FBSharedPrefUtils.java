@@ -1,4 +1,4 @@
-package com.thyme.smalam119.routeplannerapplication.Utils;
+package com.thyme.smalam119.routeplannerapplication.Utils.Facebook;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -9,11 +9,11 @@ import android.util.Log;
  * Created by smalam119 on 11/24/17.
  */
 
-public class SharedPrefUtils {
+public class FBSharedPrefUtils {
 
     private Activity mActivity;
 
-    public SharedPrefUtils(Activity activity) {
+    public FBSharedPrefUtils(Activity activity) {
         this.mActivity = activity;
     }
 

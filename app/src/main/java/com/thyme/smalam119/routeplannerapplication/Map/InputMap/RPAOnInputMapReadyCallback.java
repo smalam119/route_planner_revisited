@@ -1,4 +1,4 @@
-package com.thyme.smalam119.routeplannerapplication.Map;
+package com.thyme.smalam119.routeplannerapplication.Map.InputMap;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.location.Address;
 import android.location.Geocoder;
-
+import android.util.Log;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -16,8 +16,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
+import com.thyme.smalam119.routeplannerapplication.Utils.Cons;
 import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
-
+import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -26,33 +27,32 @@ import java.util.Locale;
  * Created by smalam119 on 11/28/17.
  */
 
-public class RPAOnMapReadyCallback implements OnMapReadyCallback {
+public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
 
     public OnMapInteractionCallBack onMapInteractionCallBack;
     private Activity mActivity;
     private LocationDetail locationDetail;
+    private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
 
-    public RPAOnMapReadyCallback(Activity activity) {
+    public RPAOnInputMapReadyCallback(Activity activity) {
         this.mActivity = activity;
         locationDetail = new LocationDetail();
+        mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(activity);
     }
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        final LatLng dhaka = new LatLng(23.8103, 90.4125);
-        googleMap.addMarker(new MarkerOptions().position(dhaka)
-                .title("Marker in Dhaka")
-                .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon("D"))));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(dhaka));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dhaka, 14.0f));
+        Log.d("map","map is ready");
+        setupMap(googleMap);
         googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
+                setupMap(googleMap);
                 getLocationDetail(latLng.latitude,latLng.longitude,mActivity);
                 String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
                 googleMap.addMarker(new MarkerOptions().position(latLng)
                         .title("Marker in Dhaka")
-                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
             }
         });
 
@@ -81,20 +81,25 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
 
     private LocationDetail prepareLocationDetailModel(Address address) {
         locationDetail.setAddressLine(address.getAddressLine(0));
-        locationDetail.setLocationTitle(address.getSubLocality());
+        String subLocality = address.getSubLocality();
+        if(subLocality == null) {
+            locationDetail.setLocationTitle("Unknown");
+        } else {
+            locationDetail.setLocationTitle(address.getSubLocality());
+        }
         locationDetail.setLat(String.valueOf(address.getLatitude()));
         locationDetail.setLng(String.valueOf(address.getLongitude()));
         locationDetail.setDistance("1.5 MILES");
+        locationDetail.setIdentifierColor(HandyFunctions.getRandomColor());
         return locationDetail;
     }
 
-    private Bitmap getMarkerIcon(String alphabet) {
+    private Bitmap getMarkerIcon(String alphabet, int color) {
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         Bitmap bmp = Bitmap.createBitmap(100, 100, conf);
-        Canvas canvas = new Canvas(bmp);
 
         Paint paintCircle = new Paint();
-        paintCircle.setColor(mActivity.getResources().getColor(R.color.yellow));
+        paintCircle.setColor(color);
         paintCircle.setStyle(Paint.Style.FILL);
 
         Paint paintText = new Paint();
@@ -102,9 +107,31 @@ public class RPAOnMapReadyCallback implements OnMapReadyCallback {
         paintText.setStyle(Paint.Style.FILL_AND_STROKE);
         paintText.setTextSize(30);
 
+        Canvas canvas = new Canvas(bmp);
         canvas.drawCircle(50,50,25,paintCircle);
         canvas.drawText(alphabet,40,60,paintText);
 
         return bmp;
+    }
+
+    private void setupMap(GoogleMap googleMap) {
+        googleMap.clear();
+        googleMap.setMinZoomPreference(13.0f);
+        googleMap.setMaxZoomPreference(16.0f);
+        googleMap.setLatLngBoundsForCameraTarget(Cons.DHAKA_BOUND);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Cons.DHAKA_LATLNG));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Cons.DHAKA_LATLNG, 14.0f));
+
+        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
+
+        } else {
+            for(LocationDetail locationDetail : mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref()) {
+                String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
+                LatLng latLngSel = new LatLng(Double.valueOf(locationDetail.getLat()),Double.valueOf(locationDetail.getLng()));
+                googleMap.addMarker(new MarkerOptions().position(latLngSel)
+                        .title("Marker")
+                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
+            }
+        }
     }
 }

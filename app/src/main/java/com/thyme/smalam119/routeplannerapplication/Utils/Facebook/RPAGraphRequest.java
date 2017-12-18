@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.thyme.smalam119.routeplannerapplication.Utils.SharedPrefUtils;
 
 import org.json.JSONObject;
 
@@ -20,11 +19,11 @@ import java.net.URL;
 class RPAGraphRequest implements GraphRequest.GraphJSONObjectCallback {
 
     Activity activity;
-    SharedPrefUtils sharedPrefUtils;
+    FBSharedPrefUtils FBSharedPrefUtils;
 
     public RPAGraphRequest(Activity activity) {
         this.activity = activity;
-        sharedPrefUtils = new SharedPrefUtils(activity);
+        FBSharedPrefUtils = new FBSharedPrefUtils(activity);
     }
 
     @Override
@@ -60,7 +59,7 @@ class RPAGraphRequest implements GraphRequest.GraphJSONObjectCallback {
                 bundle.putString("gender", object.getString("gender"));
 
 
-            sharedPrefUtils.saveFacebookUserInfo(object.getString("first_name"),
+            FBSharedPrefUtils.saveFacebookUserInfo(object.getString("first_name"),
                     object.getString("last_name"),object.getString("email"),
                     object.getString("gender"), profile_pic.toString());
 

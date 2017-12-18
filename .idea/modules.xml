@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RoutePlannerApplication.iml" filepath="$PROJECT_DIR$/RoutePlannerApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/route_planner_revisited.iml" filepath="$PROJECT_DIR$/route_planner_revisited.iml" />
     </modules>
   </component>
 </project>
