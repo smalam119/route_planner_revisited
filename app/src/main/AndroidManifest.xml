@@ -56,7 +56,8 @@
         <activity android:name=".Map.FireBaseDBTestActivity" />
         <activity android:name=".LocationList.LocationListActivity" />
         <activity android:name=".Map.ResultMap.ResultMapActivity" />
-        <activity android:name=".ResultLocationList.ResultLocationListActivity"></activity>
+        <activity android:name=".ResultLocationList.ResultLocationListActivity" />
+        <activity android:name=".Profile.ProfileActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.thyme.smalam119.routeplannerapplication.Profile.ProfileActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/profile"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FFFFFF"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/margin_16dp"/>
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_name_placeholder"
+        android:layout_below="@id/profile_image"
+        android:layout_centerInParent="true"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/margin_16dp"/>
+
+    <TextView
+        android:id="@+id/user_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_email_placeholder"
+        android:layout_below="@id/user_name"
+        android:layout_centerInParent="true"
+        android:textSize="12dp" />
+
+
+    <LinearLayout
+        android:id="@+id/button_holder_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_email"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/get_opt_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Optimized Location"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/white"/>
+
+        <Button
+            android:id="@+id/send_not_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Send Notification"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@color/white"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/saved_route"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Saved Routes"
+        android:textSize="16dp"
+        android:layout_below="@id/button_holder_layout"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/saved_route_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/saved_route"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginLeft="@dimen/margin_16dp"
+        android:layout_marginRight="@dimen/margin_16dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+
+</RelativeLayout>

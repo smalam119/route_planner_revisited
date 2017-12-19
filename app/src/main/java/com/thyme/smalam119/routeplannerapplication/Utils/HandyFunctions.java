@@ -10,9 +10,7 @@ import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-
 import com.thyme.smalam119.routeplannerapplication.R;
-
 import java.text.DecimalFormat;
 import java.util.Random;
 

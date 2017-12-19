@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.thyme.smalam119.routeplannerapplication.Model.User.SinglePath;
@@ -15,7 +14,6 @@ import com.thyme.smalam119.routeplannerapplication.R;
 import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FireBaseAuthUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FireBaseDBUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.OnFireBaseDBChangeListener;
-
 import java.util.ArrayList;
 
 public class FireBaseDBTestActivity extends AppCompatActivity implements OnFireBaseDBChangeListener {
@@ -71,7 +69,7 @@ public class FireBaseDBTestActivity extends AppCompatActivity implements OnFireB
         SinglePath singlePath = new SinglePath(23.8103,90.4125,1);
         ArrayList<SinglePath> singlePaths = new ArrayList<>();
         singlePaths.add(singlePath);
-        SingleRoute singleRoute = new SingleRoute(60,singlePaths);
+        SingleRoute singleRoute = new SingleRoute(20.0,60,singlePaths);
         ArrayList<SingleRoute> singleRoutes = new ArrayList<>();
         singleRoutes.add(singleRoute);
         User user = new User(singleRoutes);

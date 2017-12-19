@@ -15,6 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.thyme.smalam119.routeplannerapplication.CustomView.LocationInfoCard;
 import com.thyme.smalam119.routeplannerapplication.LocationList.LocationListActivity;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
+import com.thyme.smalam119.routeplannerapplication.Profile.ProfileActivity;
 import com.thyme.smalam119.routeplannerapplication.R;
 import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mProfileActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
             }
         });
 

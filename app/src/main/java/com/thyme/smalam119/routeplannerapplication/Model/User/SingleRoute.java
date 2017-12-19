@@ -1,7 +1,6 @@
 package com.thyme.smalam119.routeplannerapplication.Model.User;
 
 import com.google.firebase.database.IgnoreExtraProperties;
-
 import java.util.ArrayList;
 
 /**
@@ -12,14 +11,24 @@ import java.util.ArrayList;
 public class SingleRoute {
 
     private float totalDuration;
+    private double totalDistance;
     private ArrayList<SinglePath> pathList;
 
     public SingleRoute() {
     }
 
-    public SingleRoute(float totalDuration, ArrayList<SinglePath> pathList) {
+    public SingleRoute(double totalDistance, float totalDuration, ArrayList<SinglePath> pathList) {
         this.totalDuration = totalDuration;
         this.pathList = pathList;
+        this.totalDistance = totalDistance;
+    }
+
+    public double getTotalDistance() {
+        return totalDistance;
+    }
+
+    public void setTotalDistance(double totalDistance) {
+        this.totalDistance = totalDistance;
     }
 
     public float getTotalDuration() {

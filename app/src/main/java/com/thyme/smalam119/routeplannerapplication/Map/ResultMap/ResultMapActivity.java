@@ -16,7 +16,7 @@ import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
 public class ResultMapActivity extends AppCompatActivity {
 
     private RpaOnResultMapReadyCallBack mRpaOnResultMapReadyCallBack;
-    private Button mTestButton;
+    private Button mOptimizeButton;
     public Button mNextButton;
     private RadioGroup mRadioGroup;
     private RadioButton mByDistanceRadioButton;
@@ -35,8 +35,8 @@ public class ResultMapActivity extends AppCompatActivity {
     }
 
     private void prepareView() {
-        mTestButton = (Button) findViewById(R.id.opt_dis_button);
-        mTestButton.setOnClickListener(new View.OnClickListener() {
+        mOptimizeButton = (Button) findViewById(R.id.opt_button);
+        mOptimizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int selectedId = mRadioGroup.getCheckedRadioButtonId();

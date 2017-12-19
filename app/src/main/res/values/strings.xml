@@ -19,4 +19,6 @@
     <string name="by_distance">By Distance</string>
     <string name="by_duration">By Duration</string>
     <string name="next">Next</string>
+    <string name="user_name_placeholder">Sayed Mahmudul Alam</string>
+    <string name="user_email_placeholder">syd@mail.com</string>
 </resources>
