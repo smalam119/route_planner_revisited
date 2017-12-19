@@ -56,7 +56,7 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
                 String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
                 googleMap.addMarker(new MarkerOptions().position(latLng)
                         .title("Marker in Dhaka")
-                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.getMarkerIcon(mActivity,firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
             }
         });
 
@@ -98,26 +98,6 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
         return locationDetail;
     }
 
-    private Bitmap getMarkerIcon(String alphabet, int color) {
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-        Bitmap bmp = Bitmap.createBitmap(100, 100, conf);
-
-        Paint paintCircle = new Paint();
-        paintCircle.setColor(color);
-        paintCircle.setStyle(Paint.Style.FILL);
-
-        Paint paintText = new Paint();
-        paintText.setColor(mActivity.getResources().getColor(R.color.black));
-        paintText.setStyle(Paint.Style.FILL_AND_STROKE);
-        paintText.setTextSize(30);
-
-        Canvas canvas = new Canvas(bmp);
-        canvas.drawCircle(50,50,25,paintCircle);
-        canvas.drawText(alphabet,40,60,paintText);
-
-        return bmp;
-    }
-
     private void setupMap(GoogleMap googleMap) {
         googleMap.clear();
         googleMap.setMinZoomPreference(13.0f);
@@ -134,7 +114,7 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
                 LatLng latLngSel = new LatLng(Double.valueOf(locationDetail.getLat()),Double.valueOf(locationDetail.getLng()));
                 googleMap.addMarker(new MarkerOptions().position(latLngSel)
                         .title("Marker")
-                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerIcon(firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.getMarkerIcon(mActivity,firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
             }
         }
     }

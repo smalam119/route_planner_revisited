@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     private FloatingActionMenu mFloatingActionMenu;
     private TextView mNotificationCountTV;
     private ImageView mNotificationMarkerImage;
+    private Button mNotificationButton;
     private int notificationCount = 0;
     private ArrayList<LocationDetail> locationDetails;
     private LocationDetail mGlobalLocationDetail;
@@ -80,9 +82,10 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mLocationInfoCard.setVisibility(View.GONE);
         mNotificationCountTV = (TextView) findViewById(R.id.notification_count);
         mNotificationMarkerImage = (ImageView) findViewById(R.id.marker_image);
-        mNotificationMarkerImage.setOnClickListener(new View.OnClickListener() {
+        mNotificationButton = (Button) findViewById(R.id.notification_Button) ;
+        mNotificationButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, LocationListActivity.class);
                 mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
                 startActivity(intent);

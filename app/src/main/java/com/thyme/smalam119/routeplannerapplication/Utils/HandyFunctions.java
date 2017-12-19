@@ -3,11 +3,17 @@ package com.thyme.smalam119.routeplannerapplication.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.thyme.smalam119.routeplannerapplication.R;
+
+import java.text.DecimalFormat;
 import java.util.Random;
 
 /**
@@ -94,6 +100,21 @@ public class HandyFunctions {
         return round(result);
 
     }
+
+    public static double convertMeterToKiloMeter(int meter) {
+        double km = Double.valueOf(meter) * 0.001;
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        return Double.parseDouble(df.format(km));
+    }
+
+    public static float convertMinuteToHour(int minute) {
+        float hr = Float.valueOf(minute) / 60;
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        return Float.parseFloat(df.format(hr));
+    }
+
     public static int round(double d) {
         double dAbs = Math.abs(d);
         int i = (int) dAbs;
@@ -103,5 +124,25 @@ public class HandyFunctions {
         } else {
             return d < 0 ? -(i + 1) : i + 1;
         }
+    }
+
+    public static Bitmap getMarkerIcon(Activity activity, String alphabet, int color) {
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+        Bitmap bmp = Bitmap.createBitmap(100, 100, conf);
+
+        Paint paintCircle = new Paint();
+        paintCircle.setColor(color);
+        paintCircle.setStyle(Paint.Style.FILL);
+
+        Paint paintText = new Paint();
+        paintText.setColor(activity.getResources().getColor(R.color.black));
+        paintText.setStyle(Paint.Style.FILL_AND_STROKE);
+        paintText.setTextSize(30);
+
+        Canvas canvas = new Canvas(bmp);
+        canvas.drawCircle(50,50,25,paintCircle);
+        canvas.drawText(alphabet,40,60,paintText);
+
+        return bmp;
     }
 }

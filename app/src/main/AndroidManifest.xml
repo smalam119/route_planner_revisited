@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -15,8 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Map.InputMap.MainActivity"
-            android:launchMode="standard"></activity>
+        <activity
+            android:name=".Map.InputMap.MainActivity"
+            android:launchMode="standard" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -53,9 +53,10 @@
         <activity
             android:name=".Signup.SignUpActivity"
             android:theme="@style/AppThemeLogin" />
-        <activity android:name=".Map.FireBaseDBTestActivity"></activity>
+        <activity android:name=".Map.FireBaseDBTestActivity" />
         <activity android:name=".LocationList.LocationListActivity" />
-        <activity android:name=".Map.ResultMap.ResultMapActivity"></activity>
+        <activity android:name=".Map.ResultMap.ResultMapActivity" />
+        <activity android:name=".ResultLocationList.ResultLocationListActivity"></activity>
     </application>
 
 </manifest>
