@@ -1,6 +1,5 @@
 package com.thyme.smalam119.routeplannerapplication.Map.ResultMap;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +9,6 @@ import android.widget.RadioGroup;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.thyme.smalam119.routeplannerapplication.LocationList.OptimizationType;
 import com.thyme.smalam119.routeplannerapplication.R;
-import com.thyme.smalam119.routeplannerapplication.ResultLocationList.ResultLocationListActivity;
-import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
 
 public class ResultMapActivity extends AppCompatActivity {
 
@@ -41,31 +38,24 @@ public class ResultMapActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int selectedId = mRadioGroup.getCheckedRadioButtonId();
                 if(selectedId == mByDistanceRadioButton.getId()) {
-                    mRpaOnResultMapReadyCallBack.getOptimizeRoute(OptimizationType.BY_DISTANCE);
+                    mRpaOnResultMapReadyCallBack.drawRoute(OptimizationType.BY_DISTANCE);
                 } else if(selectedId == mByDurationRadioButton.getId()) {
-                    mRpaOnResultMapReadyCallBack.getOptimizeRoute(OptimizationType.BY_DURATION);
+                    mRpaOnResultMapReadyCallBack.drawRoute(OptimizationType.BY_DURATION);
                 }
             }
         });
         mRadioGroup = (RadioGroup) findViewById(R.id.type_of_opt_radio_group);
         mByDistanceRadioButton = (RadioButton) findViewById(R.id.by_distance);
+        mByDistanceRadioButton.setChecked(true);
         mByDurationRadioButton = (RadioButton) findViewById(R.id.by_duration);
         mNextButton = (Button) findViewById(R.id.next_button);
         mNextButton.setVisibility(View.GONE);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gotoResultLocationListActivity();
             }
         });
     }
 
-    private void gotoResultLocationListActivity() {
-        Intent i = new Intent(this, ResultLocationListActivity.class);
-        i.putExtra("resultLocationList", mRpaOnResultMapReadyCallBack.optimizedLocationList);
-        i.putExtra("totalDistance", HandyFunctions.convertMeterToKiloMeter(mRpaOnResultMapReadyCallBack.totalDistance));
-        i.putExtra("totalDuration", HandyFunctions.convertMinuteToHour(mRpaOnResultMapReadyCallBack.totalDuration));
-        startActivity(i);
-    }
 
 }

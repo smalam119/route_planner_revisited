@@ -15,7 +15,7 @@
         android:id="@+id/optimize_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/next"
+        android:text="@string/Optimize"
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"

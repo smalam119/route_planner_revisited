@@ -19,7 +19,6 @@ import com.thyme.smalam119.routeplannerapplication.Utils.Cons;
 import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
 import com.thyme.smalam119.routeplannerapplication.Utils.JsonParserForDirection;
 import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
-import com.thyme.smalam119.routeplannerapplication.Utils.TSPEngine.TSPEngine;
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -34,36 +33,28 @@ public class RpaOnResultMapReadyCallBack implements OnMapReadyCallback {
     private ResultMapActivity mActivity;
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
     private ArrayList<LocationDetail> mLocationDetails;
-    private ApiInterface apiService;
-    private TSPEngine mTspEng;
-    private int[][] mInputMatrixForTSP;
-    private int numberOfLocations;
-    private ArrayList<String> mDistanceList;
-    private ArrayList<String> mDurationList;
     private GoogleMap mGoogleMap;
-    public ArrayList<LocationDetail> optimizedLocationList;
-    public int totalDistance = 0;
-    public int totalDuration = 0;
+    private int numberOfLocations;
+    private ArrayList<LocationDetail> optimizedLocationListDistance;
+    private ArrayList<LocationDetail> optimizedLocationListDuration;
+    private ApiInterface apiService;
 
 
     public RpaOnResultMapReadyCallBack(ResultMapActivity activity) {
         this.mActivity = activity;
-        apiService = RetroFitClient.getClient().create(ApiInterface.class);
         mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(activity);
         mLocationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
-        optimizedLocationList = new ArrayList<>();
-        mTspEng = new TSPEngine();
         numberOfLocations = mLocationDetails.size();
-        mInputMatrixForTSP = new int[numberOfLocations][numberOfLocations];
-        mDistanceList = new ArrayList<>();
-        mDurationList = new ArrayList<>();
+        optimizedLocationListDistance = (ArrayList<LocationDetail> )mActivity.getIntent().getSerializableExtra("optimizedLocationListDistance");
+        optimizedLocationListDuration = (ArrayList<LocationDetail>) mActivity.getIntent().getSerializableExtra("optimizedLocationListDuration");
+        apiService = RetroFitClient.getClient().create(ApiInterface.class);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         prepareMap();
-        prepareDistanceDurationList();
+        drawRoute(OptimizationType.BY_DISTANCE);
     }
 
     private void prepareMap() {
@@ -74,96 +65,29 @@ public class RpaOnResultMapReadyCallBack implements OnMapReadyCallback {
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Cons.DHAKA_LATLNG, 14.0f));
     }
 
-    public void getOptimizeRoute(OptimizationType optimizationType) {
-                int row = -1;
+    public void drawRoute(OptimizationType optimizationType) {
 
         switch (optimizationType) {
+
             case BY_DISTANCE:
-                for (int i = 0; i < mDistanceList.size(); i++) {
-                    int column = i % numberOfLocations;
-                    if (column == 0)
-                        row++;
-                    mInputMatrixForTSP[row][column] = HandyFunctions.convertDistanceToMeter(mDistanceList
-                            .get(i));
-                    totalDistance = totalDistance + HandyFunctions.convertDistanceToMeter(mDistanceList
-                            .get(i));
-                    totalDuration = totalDuration + HandyFunctions.convertHourToMinute(mDurationList.get(i));
-
-                    Log.d("total distance", totalDistance + "");
+                mGoogleMap.clear();
+                for(int i = 0; i < optimizedLocationListDistance.size() - 1; i++) {
+                    drawRoute(optimizedLocationListDistance.get(i),optimizedLocationListDistance.get(i+1),i + 1);
                 }
-                    break;
+                break;
+
             case BY_DURATION:
-                for (int i = 0; i < mDurationList.size(); i++) {
-                    int column = i % numberOfLocations;
-                    if (column == 0)
-                        row++;
-                    mInputMatrixForTSP[row][column] = HandyFunctions.convertHourToMinute(mDurationList.get(i));
-                    totalDistance = totalDistance + HandyFunctions.convertDistanceToMeter(mDistanceList
-                            .get(i));
-                    totalDuration = totalDuration + HandyFunctions.convertHourToMinute(mDurationList.get(i));
-
-                    Log.d("total distance", totalDistance + "");
+                mGoogleMap.clear();
+                for(int i = 0; i < optimizedLocationListDuration.size() - 1; i++) {
+                    drawRoute(optimizedLocationListDuration.get(i),optimizedLocationListDuration.get(i+1),i + 1);
                 }
-
+                break;
         }
 
-        final ArrayList<Integer> pointOrder = mTspEng.computeTSP(mInputMatrixForTSP,
-                numberOfLocations);
-
-        for(int i = 0; i < pointOrder.size() - 1; i++){
-            Log.d("point_order", pointOrder.get(i) + "");
-            optimizedLocationList.add(mLocationDetails.get(pointOrder.get(i)));
-        }
-
-        for(int i = 0; i < optimizedLocationList.size() - 1; i++) {
-            drawRoute(optimizedLocationList.get(i),optimizedLocationList.get(i+1),i + 1);
-        }
 
     }
 
-    private void getDistanceAndDuration(LatLng origin, LatLng dest) {
-        final ProgressDialog mProgressDialog = ProgressDialog.show(mActivity,"Please Wait",
-                "collecting data...");
-        Call<Example> call = apiService.getDistanceDuration("metric", origin.latitude + "," + origin.longitude,dest.latitude + "," + dest.longitude, "driving");
-        call.enqueue(new Callback<Example>() {
-            @Override
-            public void onResponse(Call<Example> call, Response<Example> response) {
-                try {
-                    Log.d("onResponse", "collecting data...");
-                    mProgressDialog.hide();
-                    for (int i = 0; i < response.body().getRoutes().size(); i++) {
-                        String distance = response.body().getRoutes().get(i).getLegs().get(i).getDistance().getText();
-                        String time = response.body().getRoutes().get(i).getLegs().get(i).getDuration().getText();
-                        mDistanceList.add(distance);
-                        mDurationList.add(time);
-                    }
-                } catch (Exception e) {
-                    Log.d("onResponse", "failed collecting data");
-                    mProgressDialog.hide();
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Example> call, Throwable t) {
-                Log.d("onFailure", "failed collecting data");
-                mProgressDialog.hide();
-            }
-        });
-    }
-
-    private void prepareDistanceDurationList() {
-        for (int i = 0; i < numberOfLocations; i++) {
-            LatLng origin = mLocationDetails.get(i).getLatLng();
-
-            for (int j = 0; j < numberOfLocations; j++) {
-                LatLng dest = mLocationDetails.get(j).getLatLng();
-                getDistanceAndDuration(origin,dest);
-            }
-        }
-    }
-
-    private void drawRoute(final LocationDetail origin, final LocationDetail dest, final int locationIndex) {
+    public void drawRoute(final LocationDetail origin, final LocationDetail dest, final int locationIndex) {
         final ProgressDialog mProgressDialog = ProgressDialog.show(mActivity,"Please Wait",
                 "drawing route....");
         Call<Example> call = apiService.getDistanceDuration("metric", origin.getLat() + "," + origin.getLng(),dest.getLat() + "," + dest.getLng(), "driving");
