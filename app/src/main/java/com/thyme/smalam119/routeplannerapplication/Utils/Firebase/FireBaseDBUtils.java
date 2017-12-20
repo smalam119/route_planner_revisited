@@ -25,8 +25,26 @@ public class FireBaseDBUtils {
         mFirebaseDatabase.child(root).child(userId).setValue(object);
     }
 
+    public void writeData(String root,Object object) {
+        mFirebaseDatabase.child(root).setValue(object);
+    }
+
     public void readData(String root,String userId) {
         mFirebaseDatabase.child(root).child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                onFirebaseDBChangeListener.onDataChanged(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                onFirebaseDBChangeListener.onCancel(error);
+            }
+        });
+    }
+
+    public void readData(String root) {
+        mFirebaseDatabase.child(root).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 onFirebaseDBChangeListener.onDataChanged(dataSnapshot);

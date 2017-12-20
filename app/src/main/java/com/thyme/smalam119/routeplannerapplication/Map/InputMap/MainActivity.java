@@ -14,6 +14,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.thyme.smalam119.routeplannerapplication.CustomView.LocationInfoCard;
 import com.thyme.smalam119.routeplannerapplication.LocationList.LocationListActivity;
+import com.thyme.smalam119.routeplannerapplication.Map.NotificationMap.NotificationMapActivity;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.Profile.ProfileActivity;
 import com.thyme.smalam119.routeplannerapplication.R;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mNotificationActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, NotificationMapActivity.class));
             }
         });
 

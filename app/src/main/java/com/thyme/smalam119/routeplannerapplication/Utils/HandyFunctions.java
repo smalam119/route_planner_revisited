@@ -13,6 +13,7 @@ import android.util.Log;
 import com.thyme.smalam119.routeplannerapplication.R;
 import java.text.DecimalFormat;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created by smalam119 on 12/3/17.
@@ -142,5 +143,10 @@ public class HandyFunctions {
         canvas.drawText(alphabet,40,60,paintText);
 
         return bmp;
+    }
+
+    public static String generateRandomString() {
+        String uuid = UUID.randomUUID().toString();
+        return  uuid;
     }
 }

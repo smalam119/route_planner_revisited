@@ -48,6 +48,9 @@ dependencies {
     //firebase db
     compile 'com.google.firebase:firebase-database:10.2.0'
 
+    //firebase messaging
+    //compile 'com.google.firebase:firebase-messaging:10.2.0'
+
     //gson
     compile 'com.google.code.gson:gson:2.8.2'
 
@@ -73,6 +76,7 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+
 
 
 
