@@ -122,7 +122,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
 
         } else {
             startActivity(new Intent(this, MainActivity.class));
-            Toast.makeText(this, "welcome" + mFirebaseUtils.getCurrentUser().getEmail(),Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "welcome " + mFirebaseUtils.getCurrentUser().getEmail(),Toast.LENGTH_LONG).show();
             finish();
         }
     }

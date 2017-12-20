@@ -38,6 +38,7 @@ public class RpaOnResultMapReadyCallBack implements OnMapReadyCallback {
     private ArrayList<LocationDetail> optimizedLocationListDistance;
     private ArrayList<LocationDetail> optimizedLocationListDuration;
     private ApiInterface apiService;
+    public RpaLocationListener rpaLocationListener;
 
 
     public RpaOnResultMapReadyCallBack(ResultMapActivity activity) {
@@ -55,6 +56,7 @@ public class RpaOnResultMapReadyCallBack implements OnMapReadyCallback {
         mGoogleMap = googleMap;
         prepareMap();
         drawRoute(OptimizationType.BY_DISTANCE);
+        rpaLocationListener = new RpaLocationListener(mActivity,googleMap);
     }
 
     private void prepareMap() {

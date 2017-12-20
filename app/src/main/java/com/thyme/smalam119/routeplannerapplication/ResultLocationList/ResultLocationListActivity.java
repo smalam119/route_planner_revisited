@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.thyme.smalam119.routeplannerapplication.LocationList.VerticalSpaceItemDecoration;
+import com.thyme.smalam119.routeplannerapplication.Map.InputMap.MainActivity;
 import com.thyme.smalam119.routeplannerapplication.Map.ResultMap.ResultMapActivity;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.Model.User.SinglePath;
@@ -94,5 +95,11 @@ public class ResultLocationListActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(8));
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setAdapter(mResultLocationListAdapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

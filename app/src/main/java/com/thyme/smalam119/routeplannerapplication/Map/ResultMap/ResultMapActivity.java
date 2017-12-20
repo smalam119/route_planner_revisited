@@ -18,6 +18,7 @@ public class ResultMapActivity extends AppCompatActivity {
     private RadioGroup mRadioGroup;
     private RadioButton mByDistanceRadioButton;
     private RadioButton mByDurationRadioButton;
+    private boolean isTracking = false;
 
 
     @Override
@@ -53,6 +54,17 @@ public class ResultMapActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(isTracking) {
+                    mRpaOnResultMapReadyCallBack.rpaLocationListener.stopTracking();
+                    mNextButton.setText("Start Tracking");
+                    mNextButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    isTracking = false;
+                } else {
+                    mRpaOnResultMapReadyCallBack.rpaLocationListener.startTracking();
+                    mNextButton.setText("Tracking......");
+                    mNextButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    isTracking = true;
+                }
             }
         });
     }

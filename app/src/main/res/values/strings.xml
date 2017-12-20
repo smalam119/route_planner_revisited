@@ -9,6 +9,7 @@
     <string name="sign_up">Sign-Up</string>
     <string name="profile">Profile</string>
     <string name="Notification">Notification</string>
+    <string name="current_location">Current Location</string>
     <string name="locationTitle_placeholder">Seroil</string>
     <string name="select">Select</string>
     <string name="address_line_placeholder">Horidhamlane, Ghoramara, Rajshahi</string>

@@ -69,6 +69,21 @@
             fab:fab_colorRipple="@color/white"
             fab:fab_label="@string/Notification" />
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/current_location_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/current_location"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/white"
+            fab:fab_colorRipple="@color/white"
+            fab:fab_label="@string/current_location" />
+
     </com.github.clans.fab.FloatingActionMenu>
 
 

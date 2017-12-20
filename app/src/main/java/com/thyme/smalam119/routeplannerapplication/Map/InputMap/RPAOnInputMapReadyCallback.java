@@ -1,14 +1,18 @@
 package com.thyme.smalam119.routeplannerapplication.Map.InputMap;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.content.pm.PackageManager;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Vibrator;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -16,10 +20,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
-import com.thyme.smalam119.routeplannerapplication.R;
 import com.thyme.smalam119.routeplannerapplication.Utils.Cons;
 import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
 import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +39,9 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
     private LocationDetail locationDetail;
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
     private Vibrator mVibrate;
+    private LocationManager mLocationManager;
+    private String mProvider;
+    private GoogleMap mGoogleMap;
 
     public RPAOnInputMapReadyCallback(Activity activity) {
         this.mActivity = activity;
@@ -43,9 +50,27 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
         mVibrate = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
+    public void markCurrentLocation() {
+        mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        mProvider = mLocationManager.getBestProvider(criteria, false);
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location location = mLocationManager.getLastKnownLocation(mProvider);
+        getLocationDetail(location.getLatitude(),location.getLongitude(),mActivity);
+        String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
+        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude()))
+                .title("Marker")
+                .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.
+                        getMarkerIcon(mActivity,firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
+    }
+
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         Log.d("map","map is ready");
+        mGoogleMap = googleMap;
         setupMap(googleMap);
         googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override

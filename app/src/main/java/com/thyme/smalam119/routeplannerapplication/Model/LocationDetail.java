@@ -67,4 +67,17 @@ public class LocationDetail implements Serializable {
     public LatLng getLatLng() {
         return new LatLng(Double.parseDouble(getLat()),Double.parseDouble(getLng()));
     }
+
+    public LocationDetail() {
+
+    }
+
+    public LocationDetail(String locationTitle, String addressLine, String lat, String lng, String distance, int identifierColor) {
+        this.locationTitle = locationTitle;
+        this.addressLine = addressLine;
+        this.lat = lat;
+        this.lng = lng;
+        this.distance = distance;
+        this.identifierColor = identifierColor;
+    }
 }

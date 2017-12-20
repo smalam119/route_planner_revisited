@@ -26,13 +26,14 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     private RPAOnInputMapReadyCallback mOnMapReadyCallback;
     private FloatingActionButton mProfileActionButton;
     private FloatingActionButton mNotificationActionButton;
+    private FloatingActionButton mGetCurrentLocationButton;
     private LocationInfoCard mLocationInfoCard;
     private FloatingActionMenu mFloatingActionMenu;
     private TextView mNotificationCountTV;
     private ImageView mNotificationMarkerImage;
     private Button mNotificationButton;
     private int notificationCount = 0;
-    private ArrayList<LocationDetail> locationDetails;
+    public ArrayList<LocationDetail> locationDetails;
     private LocationDetail mGlobalLocationDetail;
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
 
@@ -79,6 +80,14 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, NotificationMapActivity.class));
+            }
+        });
+
+        mGetCurrentLocationButton = (FloatingActionButton) findViewById(R.id.current_location_action_button);
+        mGetCurrentLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnMapReadyCallback.markCurrentLocation();
             }
         });
 

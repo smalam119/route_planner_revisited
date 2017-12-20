@@ -54,7 +54,7 @@
         android:id="@+id/next_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/next"
+        android:text="Start Tracking"
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"
