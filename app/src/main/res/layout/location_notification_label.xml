@@ -5,14 +5,14 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimary">
 
-    <ImageView
+    <Button
         android:id="@+id/marker_image"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/marker_white" />
+        android:background="@drawable/marker_white" />
 
     <TextView
         android:id="@+id/notification_count"
@@ -24,14 +24,5 @@
         android:text="0"
         android:textColor="@color/white"
         android:background="@color/colorPrimary"/>
-
-    <Button
-        android:id="@+id/notification_Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/transparent" />
 
 </RelativeLayout>

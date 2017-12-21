@@ -9,6 +9,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class SinglePath {
 
+    private String locationTitle;
     private double lat;
     private double lng;
     private int sequenceNumber;
@@ -16,10 +17,19 @@ public class SinglePath {
     public SinglePath() {
     }
 
-    public SinglePath(double lat, double lng, int sequenceNumber) {
+    public SinglePath(String locationList, double lat, double lng, int sequenceNumber) {
+        this.locationTitle = locationList;
         this.lat = lat;
         this.lng = lng;
         this.sequenceNumber = sequenceNumber;
+    }
+
+    public String getLocationTitle() {
+        return locationTitle;
+    }
+
+    public void setLocationTitle(String locationTitle) {
+        this.locationTitle = locationTitle;
     }
 
     public double getLat() {

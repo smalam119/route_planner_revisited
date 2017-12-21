@@ -41,4 +41,8 @@ public class LocationDetailSharedPrefUtils {
         ArrayList<LocationDetail> locationDetails  = mGson.fromJson(locationDataJson, type);
         return locationDetails;
     }
+
+    public void removeAll() {
+        mSharedPreferences.edit().clear();
+    }
 }

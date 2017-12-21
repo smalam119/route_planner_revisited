@@ -50,7 +50,6 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListViewHo
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,locationDetails.size());
                 mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
-
             }
         });
     }

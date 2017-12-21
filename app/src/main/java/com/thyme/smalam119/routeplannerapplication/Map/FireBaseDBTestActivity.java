@@ -66,7 +66,7 @@ public class FireBaseDBTestActivity extends AppCompatActivity implements OnFireB
     }
 
     private User prepareUserData() {
-        SinglePath singlePath = new SinglePath(23.8103,90.4125,1);
+        SinglePath singlePath = new SinglePath("Test",23.8103,90.4125,1);
         ArrayList<SinglePath> singlePaths = new ArrayList<>();
         singlePaths.add(singlePath);
         SingleRoute singleRoute = new SingleRoute(20.0,60,singlePaths);

@@ -23,7 +23,6 @@ import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.Utils.Cons;
 import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
 import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -59,12 +58,28 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
             return;
         }
         Location location = mLocationManager.getLastKnownLocation(mProvider);
-        getLocationDetail(location.getLatitude(),location.getLongitude(),mActivity);
-        String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
-        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude()))
-                .title("Marker")
-                .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.
-                        getMarkerIcon(mActivity,firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
+
+        if(location != null) {
+            getLocationDetail(location.getLatitude(),location.getLongitude(),mActivity);
+            String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
+            mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude()))
+                    .title("Marker")
+                    .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.
+                            getMarkerIcon(mActivity,firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(),location.getLongitude())));
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 14.0f));
+        } else {
+
+            getLocationDetail(23.7265631,90.3886909,mActivity);
+            String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
+            mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(23.7265631,90.3886909))
+                    .title("Marker")
+                    .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.
+                            getMarkerIcon(mActivity,firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(Cons.BUET_LATLNG));
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Cons.BUET_LATLNG, 14.0f));
+        }
+
     }
 
     @Override

@@ -8,19 +8,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.thyme.smalam119.routeplannerapplication.LocationList.VerticalSpaceItemDecoration;
 import com.thyme.smalam119.routeplannerapplication.Map.InputMap.MainActivity;
 import com.thyme.smalam119.routeplannerapplication.Map.ResultMap.ResultMapActivity;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.Model.User.SinglePath;
 import com.thyme.smalam119.routeplannerapplication.Model.User.SingleRoute;
-import com.thyme.smalam119.routeplannerapplication.Model.User.User;
 import com.thyme.smalam119.routeplannerapplication.R;
+import com.thyme.smalam119.routeplannerapplication.Utils.Alerts;
 import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FireBaseAuthUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FireBaseDBUtils;
+import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.OnFireBaseDBChangeListener;
+
 import java.util.ArrayList;
 
-public class ResultLocationListActivity extends AppCompatActivity {
+public class ResultLocationListActivity extends AppCompatActivity implements OnFireBaseDBChangeListener {
     private RecyclerView mRecyclerView;
     private TextView mTotalDistanceTV, mTotalDurationTV;
     private Button mSaveResultButton, mContinueButton;
@@ -31,6 +35,8 @@ public class ResultLocationListActivity extends AppCompatActivity {
     private float mTotalDuration;
     private FireBaseDBUtils mFireBaseDBUtils;
     private FireBaseAuthUtils mFireBaseAuthUtils;
+    private ArrayList<SingleRoute> mPreviousRoutes;
+    private boolean isSaved = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,11 @@ public class ResultLocationListActivity extends AppCompatActivity {
 
         mFireBaseAuthUtils = new FireBaseAuthUtils(this);
         mFireBaseDBUtils = new FireBaseDBUtils("rpa-data");
+        mFireBaseDBUtils.onFirebaseDBChangeListener = this;
+
+        mPreviousRoutes = new ArrayList<>();
+
+        mFireBaseDBUtils.readData("users",mFireBaseAuthUtils.getCurrentUser().getUid(),"routeList");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.result_location_recycler_view);
         mTotalDistanceTV = (TextView) findViewById(R.id.total_distance);
@@ -55,20 +66,36 @@ public class ResultLocationListActivity extends AppCompatActivity {
         mSaveResultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<SinglePath> singlePaths = new ArrayList<>();
-                ArrayList<SingleRoute> singleRoutes = new ArrayList<>();
-                for(LocationDetail locationDetail: optimizedLocationListDistance) {
-                    SinglePath singlePath = new SinglePath(Double.valueOf(locationDetail.getLat()),
-                            Double.valueOf(locationDetail.getLng()),1);
-                    singlePaths.add(singlePath);
 
+                if(isSaved) {
+
+                    Alerts.simpleAlertWithMessage(ResultLocationListActivity.this,"Saved",
+                            "Already Location Saved","Okay");
+
+                } else {
+                    ArrayList<SinglePath> singlePaths = new ArrayList<>();
+                    ArrayList<SingleRoute> singleRoutes = new ArrayList<>();
+
+                    for(LocationDetail locationDetail: optimizedLocationListDistance) {
+                        SinglePath singlePath = new SinglePath(locationDetail.getLocationTitle(),Double.valueOf(locationDetail.getLat()),
+                                Double.valueOf(locationDetail.getLng()),1);
+                        singlePaths.add(singlePath);
+
+                    }
+
+                    SingleRoute singleRoute = new SingleRoute(mTotalDistance,mTotalDuration,singlePaths);
+                    singleRoutes.add(singleRoute);
+
+                    for(SingleRoute previousSingleRoute: mPreviousRoutes) {
+                        singleRoutes.add(previousSingleRoute);
+                    }
+                    mFireBaseDBUtils.writeData("users",mFireBaseAuthUtils.getCurrentUser().getUid(),"routeList",singleRoutes);
+                    isSaved = true;
+                    Alerts.simpleAlertWithMessage(ResultLocationListActivity.this,"Saved",
+                            "Location Saved","Okay");
                 }
 
-                SingleRoute singleRoute = new SingleRoute(mTotalDistance,mTotalDuration,singlePaths);
-                singleRoutes.add(singleRoute);
 
-                User user = new User(singleRoutes);
-                mFireBaseDBUtils.writeData("users",mFireBaseAuthUtils.getCurrentUser().getUid(),user);
 
             }
         });
@@ -101,5 +128,20 @@ public class ResultLocationListActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    public void onDataChanged(DataSnapshot dataSnapshot) {
+        mPreviousRoutes.clear();
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            SingleRoute singleRoute = snapshot.getValue(SingleRoute.class);
+            mPreviousRoutes.add(singleRoute);
+        }
+
+    }
+
+    @Override
+    public void onCancel(DatabaseError error) {
+
     }
 }

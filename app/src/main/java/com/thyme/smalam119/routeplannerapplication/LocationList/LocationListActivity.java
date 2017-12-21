@@ -31,7 +31,7 @@ public class LocationListActivity extends AppCompatActivity {
     private LocationListAdapter locationListAdapter;
     private Button mOptimizeButton;
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
-    private ArrayList<LocationDetail> mLocationDetails;
+    public ArrayList<LocationDetail> mLocationDetails;
     private ArrayList<String> mDistanceList;
     private ArrayList<String> mDurationList;
     public ArrayList<LocationDetail> optimizedLocationListDistance;
@@ -183,6 +183,7 @@ public class LocationListActivity extends AppCompatActivity {
         intent.putExtra("totalDistance", HandyFunctions.convertMeterToKiloMeter(totalDistance));
         intent.putExtra("totalDuration", HandyFunctions.convertMinuteToHour(totalDuration));
         startActivity(intent);
+        finish();
 
     }
 

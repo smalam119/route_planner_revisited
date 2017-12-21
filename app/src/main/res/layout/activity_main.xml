@@ -84,6 +84,21 @@
             fab:fab_colorRipple="@color/white"
             fab:fab_label="@string/current_location" />
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/log_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/logout"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            fab:fab_colorNormal="@color/colorPrimaryDark"
+            fab:fab_colorPressed="@color/white"
+            fab:fab_colorRipple="@color/white"
+            fab:fab_label="Logout" />
+
     </com.github.clans.fab.FloatingActionMenu>
 
 

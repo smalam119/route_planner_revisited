@@ -7,17 +7,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.thyme.smalam119.routeplannerapplication.CustomView.LocationInfoCard;
 import com.thyme.smalam119.routeplannerapplication.LocationList.LocationListActivity;
+import com.thyme.smalam119.routeplannerapplication.Login.LoginActivity;
 import com.thyme.smalam119.routeplannerapplication.Map.NotificationMap.NotificationMapActivity;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.Profile.ProfileActivity;
 import com.thyme.smalam119.routeplannerapplication.R;
+import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FireBaseAuthUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
 import java.util.ArrayList;
 
@@ -27,15 +28,16 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     private FloatingActionButton mProfileActionButton;
     private FloatingActionButton mNotificationActionButton;
     private FloatingActionButton mGetCurrentLocationButton;
+    private FloatingActionButton mLogoutActionButton;
     private LocationInfoCard mLocationInfoCard;
     private FloatingActionMenu mFloatingActionMenu;
     private TextView mNotificationCountTV;
-    private ImageView mNotificationMarkerImage;
-    private Button mNotificationButton;
+    private Button mNotificationMarkerImage;
     private int notificationCount = 0;
     public ArrayList<LocationDetail> locationDetails;
     private LocationDetail mGlobalLocationDetail;
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
+    private FireBaseAuthUtils fireBaseAuthUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     }
 
     private void prepareView() {
+
+        fireBaseAuthUtils = new FireBaseAuthUtils(this);
+
         if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
             locationDetails = new ArrayList<>();
         } else {
@@ -91,12 +96,23 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
             }
         });
 
+        mLogoutActionButton = (FloatingActionButton) findViewById(R.id.log_out);
+        mLogoutActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLocationDetailSharedPrefUtils.removeAll();
+                fireBaseAuthUtils.logOut();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+
+            }
+        });
+
         mLocationInfoCard = (LocationInfoCard) findViewById(R.id.location_info);
         mLocationInfoCard.setVisibility(View.GONE);
         mNotificationCountTV = (TextView) findViewById(R.id.notification_count);
-        mNotificationMarkerImage = (ImageView) findViewById(R.id.marker_image);
-        mNotificationButton = (Button) findViewById(R.id.notification_Button) ;
-        mNotificationButton.setOnClickListener(new View.OnClickListener() {
+        mNotificationMarkerImage = (Button) findViewById(R.id.marker_image);
+        mNotificationMarkerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, LocationListActivity.class);
@@ -109,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mLocationInfoCard.getSelectButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mNotificationMarkerImage.setImageResource(R.drawable.marker);
+                mNotificationMarkerImage.setBackgroundResource(R.drawable.marker);
                 LocationDetail locationDetail = mLocationInfoCard.getLocationData();
                 locationDetails.add(locationDetail);
                 mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
@@ -118,10 +134,11 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
             }
         });
 
-        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
+        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size() == 0) {
             mNotificationCountTV.setText(0 + "");
+            mNotificationMarkerImage.setBackgroundResource(R.drawable.marker_white);
         } else {
-            mNotificationMarkerImage.setImageResource(R.drawable.marker);
+            mNotificationMarkerImage.setBackgroundResource(R.drawable.marker);
             notificationCount = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size();
             mNotificationCountTV.setText(notificationCount + "");
         }
