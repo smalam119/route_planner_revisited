@@ -40,5 +40,12 @@ public class Alerts {
         builder.show();
     }
 
+    public static void showSimpleWarning(final Activity activity, String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
+    }
+
 
 }

@@ -11,8 +11,8 @@ import com.thyme.smalam119.routeplannerapplication.LocationList.OptimizationType
 import com.thyme.smalam119.routeplannerapplication.R;
 
 public class ResultMapActivity extends AppCompatActivity {
-
     private RpaOnResultMapReadyCallBack mRpaOnResultMapReadyCallBack;
+    SupportMapFragment mMapFragment;
     private Button mOptimizeButton;
     public Button mNextButton;
     private RadioGroup mRadioGroup;
@@ -20,19 +20,23 @@ public class ResultMapActivity extends AppCompatActivity {
     private RadioButton mByDurationRadioButton;
     private boolean isTracking = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRpaOnResultMapReadyCallBack = new RpaOnResultMapReadyCallBack(this);
         setContentView(R.layout.activity_result_map);
+        prepareUtils();
         prepareView();
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map_result);
-        mapFragment.getMapAsync(mRpaOnResultMapReadyCallBack);
+    }
+
+    private void prepareUtils() {
+        mRpaOnResultMapReadyCallBack = new RpaOnResultMapReadyCallBack(this);
     }
 
     private void prepareView() {
+        mMapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map_result);
+        mMapFragment.getMapAsync(mRpaOnResultMapReadyCallBack);
+
         mOptimizeButton = (Button) findViewById(R.id.opt_button);
         mOptimizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +49,7 @@ public class ResultMapActivity extends AppCompatActivity {
                 }
             }
         });
+
         mRadioGroup = (RadioGroup) findViewById(R.id.type_of_opt_radio_group);
         mByDistanceRadioButton = (RadioButton) findViewById(R.id.by_distance);
         mByDistanceRadioButton.setChecked(true);
@@ -68,6 +73,5 @@ public class ResultMapActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }

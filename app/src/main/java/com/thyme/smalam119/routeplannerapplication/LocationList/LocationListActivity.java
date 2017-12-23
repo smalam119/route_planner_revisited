@@ -25,22 +25,29 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LocationListActivity extends AppCompatActivity {
+public class LocationListActivity extends AppCompatActivity implements OnAdapterValueChanged {
 
+    //view
     private RecyclerView mLocationRecyclerView;
-    private LocationListAdapter locationListAdapter;
     private Button mOptimizeButton;
+
+    //managers
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
+    private ApiInterface apiService;
+    private LocationListAdapter locationListAdapter;
+    private TSPEngine mTspEng;
+
+    //lists
     public ArrayList<LocationDetail> mLocationDetails;
     private ArrayList<String> mDistanceList;
     private ArrayList<String> mDurationList;
     public ArrayList<LocationDetail> optimizedLocationListDistance;
     public ArrayList<LocationDetail> optimizedLocationListDuration;
-    private ApiInterface apiService;
+
+    //others
     private int numberOfLocations;
     private int[][] mInputMatrixForTspDistance;
     private int[][] mInputMatrixForTspDuration;
-    private TSPEngine mTspEng;
     public int totalDistance = 0;
     public int totalDuration = 0;
 
@@ -48,12 +55,36 @@ public class LocationListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_list);
+        prepareUtils();
+        prepareLists();
         prepareView();
     }
 
-    private void prepareView() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("onResume","called");
+    }
+
+    private void prepareUtils() {
         apiService = RetroFitClient.getClient().create(ApiInterface.class);
+        mTspEng = new TSPEngine();
         mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(getApplicationContext());
+    }
+
+    private void resetLists() {
+        mLocationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
+        numberOfLocations = mLocationDetails.size();
+        mDistanceList.clear();
+        mDurationList.clear();
+        optimizedLocationListDistance.clear();
+        optimizedLocationListDuration.clear();
+        mInputMatrixForTspDistance = new int[numberOfLocations][numberOfLocations];
+        mInputMatrixForTspDuration = new int[numberOfLocations][numberOfLocations];
+        prepareDistanceDurationList();
+    }
+
+    private void prepareLists() {
         mLocationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
         numberOfLocations = mLocationDetails.size();
         mDistanceList = new ArrayList<>();
@@ -62,7 +93,10 @@ public class LocationListActivity extends AppCompatActivity {
         optimizedLocationListDuration = new ArrayList<>();
         mInputMatrixForTspDistance = new int[numberOfLocations][numberOfLocations];
         mInputMatrixForTspDuration = new int[numberOfLocations][numberOfLocations];
-        mTspEng = new TSPEngine();
+        prepareDistanceDurationList();
+    }
+
+    private void prepareView() {
         mLocationRecyclerView = findViewById(R.id.location_recycler_view);
         mOptimizeButton = findViewById(R.id.optimize_button);
         mOptimizeButton.setOnClickListener(new View.OnClickListener() {
@@ -75,9 +109,9 @@ public class LocationListActivity extends AppCompatActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mLocationRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(8));
         locationListAdapter = new LocationListAdapter(this,mLocationDetails);
+        locationListAdapter.onAdapterValueChanged = this;
         mLocationRecyclerView.setLayoutManager(llm);
         mLocationRecyclerView.setAdapter(locationListAdapter);
-        prepareDistanceDurationList();
     }
 
     @Override
@@ -89,7 +123,6 @@ public class LocationListActivity extends AppCompatActivity {
     private void prepareDistanceDurationList() {
         for (int i = 0; i < numberOfLocations; i++) {
             LatLng origin = mLocationDetails.get(i).getLatLng();
-
             for (int j = 0; j < numberOfLocations; j++) {
                 LatLng dest = mLocationDetails.get(j).getLatLng();
                 getDistanceAndDuration(origin,dest);
@@ -130,9 +163,6 @@ public class LocationListActivity extends AppCompatActivity {
     }
 
     public void getOptimizeRoute() {
-
-        Log.d("duration size", mDurationList.size() + "");
-        Log.d("distance size", mDistanceList.size() + "");
         int row = -1;
 
         for (int i = 0; i < mDistanceList.size(); i++) {
@@ -177,14 +207,21 @@ public class LocationListActivity extends AppCompatActivity {
 //            optimizedLocationListDuration.add(mLocationDetails.get(pointOrderByDuration.get(i)));
 //        }
 
+        gotoResultLists();
+
+    }
+
+    private void gotoResultLists() {
         Intent intent = new Intent(this, ResultLocationListActivity.class);
         intent.putExtra("optimizedLocationListDistance", optimizedLocationListDistance);
         intent.putExtra("optimizedLocationListDuration", optimizedLocationListDuration);
         intent.putExtra("totalDistance", HandyFunctions.convertMeterToKiloMeter(totalDistance));
         intent.putExtra("totalDuration", HandyFunctions.convertMinuteToHour(totalDuration));
         startActivity(intent);
-        finish();
-
+        //finish();
     }
 
+    @Override
+    public void onRemoveLocation(int position) {
+    }
 }

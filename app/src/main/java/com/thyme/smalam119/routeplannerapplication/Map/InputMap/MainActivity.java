@@ -18,13 +18,14 @@ import com.thyme.smalam119.routeplannerapplication.Map.NotificationMap.Notificat
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.Profile.ProfileActivity;
 import com.thyme.smalam119.routeplannerapplication.R;
+import com.thyme.smalam119.routeplannerapplication.Utils.Alerts;
 import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.LoginRegistrationManager.LoginManager;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnMapInteractionCallBack {
 
-    private RPAOnInputMapReadyCallback mOnMapReadyCallback;
+    //view
     private FloatingActionButton mProfileActionButton;
     private FloatingActionButton mNotificationActionButton;
     private FloatingActionButton mGetCurrentLocationButton;
@@ -32,22 +33,26 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     private LocationInfoCard mLocationInfoCard;
     private FloatingActionMenu mFloatingActionMenu;
     private TextView mNotificationCountTV;
-    private Button mNotificationMarkerImage;
+    private Button mNumberOfLocationAddedButton;
+    private SupportMapFragment mMapFragment;
+
+    //interface
+    private RPAOnInputMapReadyCallback mOnMapReadyCallback;
+
+    //others
     private int notificationCount = 0;
     public ArrayList<LocationDetail> locationDetails;
     private LocationDetail mGlobalLocationDetail;
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
+
+    //managers
     private LoginManager mLoginManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mOnMapReadyCallback = new RPAOnInputMapReadyCallback(this);
-        mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(this);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(mOnMapReadyCallback);
+        prepareUtils();
         prepareView();
     }
 
@@ -57,7 +62,9 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     }
 
     private void prepareView() {
-        mLoginManager = new LoginManager(this);
+        mMapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mMapFragment.getMapAsync(mOnMapReadyCallback);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setCustomView(R.layout.location_notification_label);
@@ -105,42 +112,54 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mLocationInfoCard = (LocationInfoCard) findViewById(R.id.location_info);
         mLocationInfoCard.setVisibility(View.GONE);
         mNotificationCountTV = (TextView) findViewById(R.id.notification_count);
-        mNotificationMarkerImage = (Button) findViewById(R.id.marker_image);
-        mNotificationMarkerImage.setOnClickListener(new View.OnClickListener() {
+        mNumberOfLocationAddedButton = (Button) findViewById(R.id.marker_image);
+        mNumberOfLocationAddedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, LocationListActivity.class);
-                mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
-                startActivity(intent);
-                finish();
+                if(notificationCount > 0) {
+                    Intent intent = new Intent(MainActivity.this, LocationListActivity.class);
+                    mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Alerts.showSimpleWarning(MainActivity.this,"warning","No location is added yet");
+                }
             }
         });
 
         mLocationInfoCard.getSelectButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mNotificationMarkerImage.setBackgroundResource(R.drawable.marker);
+                mNumberOfLocationAddedButton.setBackgroundResource(R.drawable.marker);
                 LocationDetail locationDetail = mLocationInfoCard.getLocationData();
                 locationDetails.add(locationDetail);
-                mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
-                notificationCount = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size();
+                notificationCount = locationDetails.size();
                 mNotificationCountTV.setText(notificationCount + "");
             }
         });
 
-        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
-            locationDetails = new ArrayList<>();
+        if(locationDetails.size() == 0) {
+            mNumberOfLocationAddedButton.setBackgroundResource(R.drawable.marker_white);
             mNotificationCountTV.setText(0 + "");
-            mNotificationMarkerImage.setBackgroundResource(R.drawable.marker_white);
         } else {
-            locationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
-            mNotificationMarkerImage.setBackgroundResource(R.drawable.marker);
-            notificationCount = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size();
+            mNumberOfLocationAddedButton.setBackgroundResource(R.drawable.marker);
+            notificationCount = locationDetails.size();
             mNotificationCountTV.setText(notificationCount + "");
         }
 
-        mOnMapReadyCallback.onMapInteractionCallBack = this;
+    }
 
+    private void prepareUtils() {
+        mOnMapReadyCallback = new RPAOnInputMapReadyCallback(this);
+        mOnMapReadyCallback.onMapInteractionCallBack = this;
+        mLocationDetailSharedPrefUtils = new LocationDetailSharedPrefUtils(this);
+        mLoginManager = new LoginManager(this);
+
+        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
+            locationDetails = new ArrayList<>();
+        } else {
+            locationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
+        }
     }
 
     private void showLocationInfoCard() {

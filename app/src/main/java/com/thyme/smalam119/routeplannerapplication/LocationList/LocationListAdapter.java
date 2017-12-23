@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.R;
 import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
+
 import java.util.ArrayList;
 
 public class LocationListAdapter extends RecyclerView.Adapter<LocationListViewHolder> {
     private Context mContext;
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
-    ArrayList<LocationDetail> locationDetails;
+    public ArrayList<LocationDetail> locationDetails;
+    public OnAdapterValueChanged onAdapterValueChanged;
 
     public LocationListAdapter(Context context, ArrayList<LocationDetail> locationDetails) {
         this.mContext = context;
@@ -50,6 +52,7 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListViewHo
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,locationDetails.size());
                 mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
+                onAdapterValueChanged.onRemoveLocation(position);
             }
         });
     }
