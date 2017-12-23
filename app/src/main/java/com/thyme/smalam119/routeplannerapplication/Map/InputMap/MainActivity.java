@@ -18,8 +18,8 @@ import com.thyme.smalam119.routeplannerapplication.Map.NotificationMap.Notificat
 import com.thyme.smalam119.routeplannerapplication.Model.LocationDetail;
 import com.thyme.smalam119.routeplannerapplication.Profile.ProfileActivity;
 import com.thyme.smalam119.routeplannerapplication.R;
-import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FireBaseAuthUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.LocationDetailSharedPrefUtils;
+import com.thyme.smalam119.routeplannerapplication.Utils.LoginRegistrationManager.LoginManager;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnMapInteractionCallBack {
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     public ArrayList<LocationDetail> locationDetails;
     private LocationDetail mGlobalLocationDetail;
     private LocationDetailSharedPrefUtils mLocationDetailSharedPrefUtils;
-    private FireBaseAuthUtils fireBaseAuthUtils;
+    private LoginManager mLoginManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +57,8 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
     }
 
     private void prepareView() {
+        mLoginManager = new LoginManager(this);
 
-        fireBaseAuthUtils = new FireBaseAuthUtils(this);
-
-        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
-            locationDetails = new ArrayList<>();
-        } else {
-            locationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
-        }
         ActionBar actionBar = getSupportActionBar();
         actionBar.setCustomView(R.layout.location_notification_label);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
@@ -101,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
             @Override
             public void onClick(View view) {
                 mLocationDetailSharedPrefUtils.removeAll();
-                fireBaseAuthUtils.logOut();
+                mLoginManager.logout();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
 
@@ -134,10 +128,12 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
             }
         });
 
-        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size() == 0) {
+        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
+            locationDetails = new ArrayList<>();
             mNotificationCountTV.setText(0 + "");
             mNotificationMarkerImage.setBackgroundResource(R.drawable.marker_white);
         } else {
+            locationDetails = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref();
             mNotificationMarkerImage.setBackgroundResource(R.drawable.marker);
             notificationCount = mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size();
             mNotificationCountTV.setText(notificationCount + "");

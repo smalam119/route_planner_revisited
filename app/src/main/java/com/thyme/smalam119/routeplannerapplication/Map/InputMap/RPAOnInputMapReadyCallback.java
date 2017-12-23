@@ -12,7 +12,6 @@ import android.location.LocationManager;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -86,17 +85,27 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
     public void onMapReady(final GoogleMap googleMap) {
         Log.d("map","map is ready");
         mGoogleMap = googleMap;
-        setupMap(googleMap);
+        initializeMap();
         googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
                 mVibrate.vibrate(100);
-                setupMap(googleMap);
+                mGoogleMap.clear();
                 getLocationDetail(latLng.latitude,latLng.longitude,mActivity);
                 String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
                 googleMap.addMarker(new MarkerOptions().position(latLng)
                         .title("Marker in Dhaka")
-                        .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.getMarkerIcon(mActivity,firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.getMarkerIcon(mActivity,firstCharacterOfLocationName,
+                                locationDetail.getIdentifierColor()))));
+
+                for(LocationDetail locationDetail : mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref()) {
+                    String firstCharacterOfLocationNameNew = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
+                    LatLng latLngSel = new LatLng(Double.valueOf(locationDetail.getLat()),Double.valueOf(locationDetail.getLng()));
+                    googleMap.addMarker(new MarkerOptions().position(latLngSel)
+                            .title("Marker")
+                            .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.getMarkerIcon(mActivity,
+                                    firstCharacterOfLocationNameNew,locationDetail.getIdentifierColor()))));
+                }
             }
         });
 
@@ -138,24 +147,29 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
         return locationDetail;
     }
 
-    private void setupMap(GoogleMap googleMap) {
-        googleMap.clear();
-        googleMap.setMinZoomPreference(13.0f);
-        googleMap.setMaxZoomPreference(16.0f);
-        googleMap.setLatLngBoundsForCameraTarget(Cons.DHAKA_BOUND);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Cons.DHAKA_LATLNG));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Cons.DHAKA_LATLNG, 14.0f));
-
-        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref() == null) {
-
+    private void initializeMap() {
+        if(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size() == 0) {
+            mGoogleMap.clear();
+            mGoogleMap.setMinZoomPreference(13.0f);
+            mGoogleMap.setMaxZoomPreference(16.0f);
+            mGoogleMap.setLatLngBoundsForCameraTarget(Cons.DHAKA_BOUND);
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(Cons.DHAKA_LATLNG));
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Cons.DHAKA_LATLNG, 14.0f));
         } else {
+
             for(LocationDetail locationDetail : mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref()) {
-                String firstCharacterOfLocationName = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
+                String firstCharacterOfLocationNameNew = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
                 LatLng latLngSel = new LatLng(Double.valueOf(locationDetail.getLat()),Double.valueOf(locationDetail.getLng()));
-                googleMap.addMarker(new MarkerOptions().position(latLngSel)
+                mGoogleMap.addMarker(new MarkerOptions().position(latLngSel)
                         .title("Marker")
-                        .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.getMarkerIcon(mActivity,firstCharacterOfLocationName,locationDetail.getIdentifierColor()))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(HandyFunctions.getMarkerIcon(mActivity,
+                                firstCharacterOfLocationNameNew,locationDetail.getIdentifierColor()))));
             }
+
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().
+                    get(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size() - 1).getLatLng()));
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().
+                    get(mLocationDetailSharedPrefUtils.getLocationDataFromSharedPref().size() - 1).getLatLng(), 14.0f));
         }
     }
 }

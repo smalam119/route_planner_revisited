@@ -1,18 +1,15 @@
 package com.thyme.smalam119.routeplannerapplication.Utils.Firebase;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.thyme.smalam119.routeplannerapplication.Map.InputMap.MainActivity;
-import com.thyme.smalam119.routeplannerapplication.Utils.Alerts;
-import com.thyme.smalam119.routeplannerapplication.Utils.BasicProgressBar;
+import com.thyme.smalam119.routeplannerapplication.Utils.LoginRegistrationManager.LoginManager;
+import com.thyme.smalam119.routeplannerapplication.Utils.LoginRegistrationManager.RegistrationManager;
 
 
 /**
@@ -23,55 +20,57 @@ public class FireBaseAuthUtils {
 
     public FirebaseAuth mAuth;
     private Activity mActivity;
-    private BasicProgressBar mBasicProgressBar;
+    private LoginManager mLoginManager;
+    private RegistrationManager mRegistrationManager;
 
     public FireBaseAuthUtils(Activity activity) {
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    public FireBaseAuthUtils(LoginManager loginManager, Activity activity) {
+        this.mLoginManager = loginManager;
         this.mActivity = activity;
         mAuth = FirebaseAuth.getInstance();
-        mBasicProgressBar = new BasicProgressBar(activity,"Loading");
+    }
+
+    public FireBaseAuthUtils(RegistrationManager registrationManager, Activity activity) {
+        this.mRegistrationManager = registrationManager;
+        this.mActivity = activity;
+        mAuth = FirebaseAuth.getInstance();
     }
 
     public void createUser(String email, String password){
-        mBasicProgressBar.show();
         mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        mBasicProgressBar.hide();
-                        Alerts.simpleAlertWithMessage(mActivity, "Sign up Failed",e.getMessage(),"Retry");
+                        mRegistrationManager.onRegistrationListener.onRegistrationFailed(e.getMessage());
+
                     }
                 })
                 .addOnCompleteListener(mActivity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        mBasicProgressBar.hide();
                         if(task.isSuccessful()) {
-                            Toast.makeText(mActivity,"New User Created!!!",Toast.LENGTH_LONG).show();
-                            mActivity.startActivity(new Intent(mActivity, MainActivity.class));
-                            mActivity.finish();
+                            mRegistrationManager.onRegistrationListener.onRegistrationSuccess();
                         }
                     }
                 });
     }
 
     public void signInUser(String email, String password){
-        mBasicProgressBar.show();
         mAuth.signInWithEmailAndPassword(email,password)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        mBasicProgressBar.hide();
-                        Alerts.simpleAlertWithMessage(mActivity, "Login Failed",e.getMessage(),"Retry");
+                        mLoginManager.onLoginListener.onLoginFailed(e.getMessage());
                     }
                 })
                 .addOnCompleteListener(mActivity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        mBasicProgressBar.hide();
                         if(task.isSuccessful()) {
-                            Toast.makeText(mActivity,"Login Success!!!",Toast.LENGTH_LONG).show();
-                            mActivity.startActivity(new Intent(mActivity, MainActivity.class));
-                            mActivity.finish();
+                            mLoginManager.onLoginListener.onLoginSuccess();
                         }
                     }
                 });

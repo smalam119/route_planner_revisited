@@ -16,15 +16,17 @@ import com.thyme.smalam119.routeplannerapplication.Map.InputMap.MainActivity;
 import com.thyme.smalam119.routeplannerapplication.R;
 import com.thyme.smalam119.routeplannerapplication.Signup.SignUpActivity;
 import com.thyme.smalam119.routeplannerapplication.Utils.Alerts;
+import com.thyme.smalam119.routeplannerapplication.Utils.BasicProgressBar;
 import com.thyme.smalam119.routeplannerapplication.Utils.Facebook.RPAFacebookAccessTokenTracker;
 import com.thyme.smalam119.routeplannerapplication.Utils.Facebook.RPAFacebookCallBack;
-import com.thyme.smalam119.routeplannerapplication.Utils.Firebase.FireBaseAuthUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.HandyFunctions;
+import com.thyme.smalam119.routeplannerapplication.Utils.LoginRegistrationManager.LoginManager;
+import com.thyme.smalam119.routeplannerapplication.Utils.LoginRegistrationManager.OnLoginListener;
 import com.thyme.smalam119.routeplannerapplication.Utils.Permission.RuntimePermissionsActivity;
 import com.thyme.smalam119.routeplannerapplication.Utils.Facebook.FBSharedPrefUtils;
 import com.thyme.smalam119.routeplannerapplication.Utils.Validations;
 
-public class LoginActivity extends RuntimePermissionsActivity {
+public class LoginActivity extends RuntimePermissionsActivity implements OnLoginListener {
 
     //views
     private LoginButton facebookLoginButton;
@@ -32,6 +34,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
     private EditText mPasswordEditText;
     private Button okayButton;
     private TextView mSignUpLinkTV;
+    private BasicProgressBar mBasicProgressBar;
 
     //facebook
     private FacebookCallback<LoginResult> mFacebookCallback;
@@ -40,13 +43,15 @@ public class LoginActivity extends RuntimePermissionsActivity {
 
     //utils
     private FBSharedPrefUtils mFBSharedPrefUtils;
-    private FireBaseAuthUtils mFirebaseUtils;
     private Validations mValidations;
+    private LoginManager mLoginManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        prepareFacebookLogin();
+        prepareUtils();
         prepareView();
         initializeUser();
     }
@@ -63,8 +68,7 @@ public class LoginActivity extends RuntimePermissionsActivity {
     }
 
     private void prepareView() {
-        prepareFacebookLogin();
-        prepareUtils();
+        mBasicProgressBar = new BasicProgressBar(this,"Loading");
         mEmailEditText = (EditText) findViewById(R.id.email_edit_text);
         mPasswordEditText = (EditText) findViewById(R.id.password_edit_text);
         mSignUpLinkTV = (TextView) findViewById(R.id.sign_up_link);
@@ -85,7 +89,8 @@ public class LoginActivity extends RuntimePermissionsActivity {
                     Toast.makeText(LoginActivity.this,"fields can not be empty",Toast.LENGTH_LONG).show();
                 } else {
                     if(mValidations.isValidEmail(email)) {
-                        mFirebaseUtils.signInUser(email,password);
+                        mBasicProgressBar.show();
+                        mLoginManager.login(email,password);
                     } else {
                         Toast.makeText(LoginActivity.this,"not a valid mail address",Toast.LENGTH_LONG).show();
                         mEmailEditText.setError("not a valid mail address");
@@ -106,23 +111,18 @@ public class LoginActivity extends RuntimePermissionsActivity {
 
     private void prepareUtils() {
         mFBSharedPrefUtils = new FBSharedPrefUtils(this);
-        mFirebaseUtils = new FireBaseAuthUtils(this);
+        mLoginManager = new LoginManager(this);
+        mLoginManager.onLoginListener = this;
         mValidations = new Validations();
     }
 
     private void checkExistingUser() {
-        if(mFBSharedPrefUtils.getToken() == null) {
+
+        if(mLoginManager.getAuthKey() == null) {
 
         } else {
             startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-
-        if(mFirebaseUtils.getCurrentUser() == null) {
-
-        } else {
-            startActivity(new Intent(this, MainActivity.class));
-            Toast.makeText(this, "welcome " + mFirebaseUtils.getCurrentUser().getEmail(),Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "welcome" + " " + mLoginManager.getUserMail(),Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -137,5 +137,18 @@ public class LoginActivity extends RuntimePermissionsActivity {
     }
 
 
+    @Override
+    public void onLoginSuccess() {
+        mBasicProgressBar.hide();
+        Toast.makeText(this,"Login Success!!!",Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onLoginFailed(String message) {
+        mBasicProgressBar.hide();
+        Alerts.simpleAlertWithMessage(this, "Login Failed",message,"Retry");
+    }
 }
 
