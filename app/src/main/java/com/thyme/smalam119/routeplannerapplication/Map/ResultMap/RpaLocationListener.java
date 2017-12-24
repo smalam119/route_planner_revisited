@@ -66,7 +66,6 @@ public class RpaLocationListener implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("onLocationChanged", "called");
         if(marker != null) {
             marker.remove();
         }
@@ -79,16 +78,13 @@ public class RpaLocationListener implements LocationListener {
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
-        Log.d("onStatusChanged", "called");
     }
 
     @Override
     public void onProviderEnabled(String s) {
-        Log.d("onProviderEnabled", "called");
     }
 
     @Override
     public void onProviderDisabled(String s) {
-        Log.d("onProviderDisabled", "called");
     }
 }

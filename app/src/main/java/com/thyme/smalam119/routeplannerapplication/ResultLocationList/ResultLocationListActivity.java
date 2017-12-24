@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.thyme.smalam119.routeplannerapplication.LocationList.LocationListActivity;
 import com.thyme.smalam119.routeplannerapplication.LocationList.VerticalSpaceItemDecoration;
 import com.thyme.smalam119.routeplannerapplication.Map.InputMap.MainActivity;
 import com.thyme.smalam119.routeplannerapplication.Map.ResultMap.ResultMapActivity;
@@ -132,7 +133,7 @@ public class ResultLocationListActivity extends AppCompatActivity implements OnF
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LocationListActivity.class));
     }
 
     @Override

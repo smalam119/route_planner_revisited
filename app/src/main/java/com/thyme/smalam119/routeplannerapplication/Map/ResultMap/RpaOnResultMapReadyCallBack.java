@@ -97,7 +97,6 @@ public class RpaOnResultMapReadyCallBack implements OnMapReadyCallback {
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
                 try {
-                    Log.d("onResponse", "drawing route....");
                     mProgressDialog.hide();
                     for (int i = 0; i < response.body().getRoutes().size(); i++) {
                         String encodedString = response.body().getRoutes().get(0).getOverviewPolyline().getPoints();
@@ -119,7 +118,6 @@ public class RpaOnResultMapReadyCallBack implements OnMapReadyCallback {
                     }
                     mActivity.mNextButton.setVisibility(View.VISIBLE);
                 } catch (Exception e) {
-                    Log.d("onResponse", "drawing failed");
                     mProgressDialog.hide();
                     e.printStackTrace();
                 }
@@ -128,7 +126,6 @@ public class RpaOnResultMapReadyCallBack implements OnMapReadyCallback {
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
                 mProgressDialog.hide();
-                Log.d("onFailure", "drawing failed");
             }
         });
     }

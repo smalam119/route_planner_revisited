@@ -116,13 +116,13 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         mNumberOfLocationAddedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(notificationCount > 0) {
+                if(notificationCount >= 2) {
                     Intent intent = new Intent(MainActivity.this, LocationListActivity.class);
                     mLocationDetailSharedPrefUtils.setLocationDataToSharedPref(locationDetails);
                     startActivity(intent);
                     finish();
                 } else {
-                    Alerts.showSimpleWarning(MainActivity.this,"warning","No location is added yet");
+                    Alerts.showSimpleWarning(MainActivity.this,"warning","Choose two or more locations first");
                 }
             }
         });
@@ -188,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements OnMapInteractionC
         bindLocationDataToView(locationDetail);
         showLocationInfoCard();
         mGlobalLocationDetail = locationDetail;
-        Log.d("lld",mGlobalLocationDetail.getAddressLine());
 
     }
 

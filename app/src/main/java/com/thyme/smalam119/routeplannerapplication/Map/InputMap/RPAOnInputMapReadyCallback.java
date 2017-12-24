@@ -143,7 +143,7 @@ public class RPAOnInputMapReadyCallback implements OnMapReadyCallback {
     }
 
     private void putMarker(LocationDetail locationDetail) {
-        String firstCharacterOfLocationNameNew = HandyFunctions.getFirstCharacter(locationDetail.getAddressLine());
+        String firstCharacterOfLocationNameNew = HandyFunctions.getFirstCharacter(locationDetail.getLocationTitle());
         LatLng latLngSel = new LatLng(Double.valueOf(locationDetail.getLat()),Double.valueOf(locationDetail.getLng()));
         mGoogleMap.addMarker(new MarkerOptions().position(latLngSel)
                 .title("Marker")

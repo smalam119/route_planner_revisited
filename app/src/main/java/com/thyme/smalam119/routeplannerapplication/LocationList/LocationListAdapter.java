@@ -47,7 +47,6 @@ public class LocationListAdapter extends RecyclerView.Adapter<LocationListViewHo
         holder.crossButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("cross_button",position + " clicked");
                 locationDetails.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,locationDetails.size());

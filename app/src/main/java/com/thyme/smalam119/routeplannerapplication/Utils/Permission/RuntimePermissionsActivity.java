@@ -46,8 +46,7 @@ public abstract class RuntimePermissionsActivity extends AppCompatActivity {
                         LOCATION_PERMISSION_CONSTANT);
             }
         } else {
-            //got the permission
-            Log.d("Permission","received from check permission");
+
         }
     }
 

@@ -73,7 +73,6 @@ public class RpaOnNotificationMapReadyCallBack implements OnMapReadyCallback, On
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("onclick","button clicked");
                 String title = notificationTitle.getText().toString();
                 String message = notificationMessage.getText().toString();
                 LocationAlert locationAlert = new LocationAlert(latLng.latitude,latLng.longitude,title,message);

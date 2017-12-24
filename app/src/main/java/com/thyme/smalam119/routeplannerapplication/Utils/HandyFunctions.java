@@ -60,8 +60,7 @@ public class HandyFunctions {
         try {
             result = Double.parseDouble(s[0]);
         } catch (Exception ex) {
-            Log.d("TAG_NUMBER", distance + " result" + result + " string: "
-                    + s[0] + " ex: " + ex.toString());
+
         }
 
         if (s[1].equals("km"))
@@ -83,8 +82,6 @@ public class HandyFunctions {
         try {
             result = Double.parseDouble(s[0]);
         } catch (Exception ex) {
-            Log.d("TAG_NUMBER", duration + " result" + result + " string: "
-                    + s[0] + " ex: " + ex.toString());
         }
 
         if (s[1].equals("h") && s[3].equals("min")){

@@ -2,13 +2,9 @@ package com.thyme.smalam119.routeplannerapplication.Utils.Facebook;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-
 import org.json.JSONObject;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -28,8 +24,6 @@ class RPAGraphRequest implements GraphRequest.GraphJSONObjectCallback {
 
     @Override
     public void onCompleted(JSONObject jsonObject, GraphResponse response) {
-        Log.d("login success",jsonObject.toString());
-        Log.d("login success",response.toString());
         Bundle facebookData = getFacebookData(jsonObject);
     }
 
@@ -41,7 +35,6 @@ class RPAGraphRequest implements GraphRequest.GraphJSONObjectCallback {
             URL profile_pic;
             try {
                 profile_pic = new URL("https://graph.facebook.com/" + id + "/picture?type=large");
-                Log.i("profile_pic", profile_pic + "");
                 bundle.putString("profile_pic", profile_pic.toString());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -64,7 +57,6 @@ class RPAGraphRequest implements GraphRequest.GraphJSONObjectCallback {
                     object.getString("gender"), profile_pic.toString());
 
         } catch (Exception e) {
-            Log.d("bundle_error", "BUNDLE Exception : "+e.toString());
         }
 
         return bundle;

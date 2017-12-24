@@ -43,6 +43,7 @@ public class LocationDetailSharedPrefUtils {
     }
 
     public void removeAll() {
-        mSharedPreferences.edit().clear();
+        mEditor.remove(LOCATION_DETAIL_LIST_KEY);
+        mEditor.commit();
     }
 }

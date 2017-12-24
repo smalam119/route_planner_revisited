@@ -63,7 +63,6 @@ public class LocationListActivity extends AppCompatActivity implements OnAdapter
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("onResume","called");
     }
 
     private void prepareUtils() {
@@ -138,17 +137,14 @@ public class LocationListActivity extends AppCompatActivity implements OnAdapter
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
                 try {
-                    Log.d("onResponse", "collecting data...");
                     mProgressDialog.hide();
                     for (int i = 0; i < response.body().getRoutes().size(); i++) {
                         String distance = response.body().getRoutes().get(i).getLegs().get(i).getDistance().getText();
                         String time = response.body().getRoutes().get(i).getLegs().get(i).getDuration().getText();
                         mDistanceList.add(distance);
                         mDurationList.add(time);
-                        Log.d("time and distance", distance + " " + time);
                     }
                 } catch (Exception e) {
-                    Log.d("onResponse", "failed collecting data");
                     mProgressDialog.hide();
                     e.printStackTrace();
                 }
@@ -156,7 +152,6 @@ public class LocationListActivity extends AppCompatActivity implements OnAdapter
 
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
-                Log.d("onFailure", "failed collecting data");
                 mProgressDialog.hide();
             }
         });
@@ -174,15 +169,12 @@ public class LocationListActivity extends AppCompatActivity implements OnAdapter
             totalDistance = totalDistance + HandyFunctions.convertDistanceToMeter(mDistanceList
                     .get(i));
             totalDuration = totalDuration + HandyFunctions.convertHourToMinute(mDurationList.get(i));
-
-            Log.d("total distance", totalDistance + "");
         }
 
         ArrayList<Integer> pointOrderByDistance = mTspEng.computeTSP(mInputMatrixForTspDistance,
                 numberOfLocations);
 
         for(int i = 0; i < pointOrderByDistance.size() - 1; i++){
-            Log.d("point_order_distance", pointOrderByDistance.get(i) + "");
             optimizedLocationListDistance.add(mLocationDetails.get(pointOrderByDistance.get(i)));
         }
 
@@ -218,10 +210,11 @@ public class LocationListActivity extends AppCompatActivity implements OnAdapter
         intent.putExtra("totalDistance", HandyFunctions.convertMeterToKiloMeter(totalDistance));
         intent.putExtra("totalDuration", HandyFunctions.convertMinuteToHour(totalDuration));
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     @Override
     public void onRemoveLocation(int position) {
+        resetLists();
     }
 }

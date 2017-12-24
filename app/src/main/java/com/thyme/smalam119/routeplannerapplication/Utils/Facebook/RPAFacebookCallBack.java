@@ -27,7 +27,6 @@ public class RPAFacebookCallBack implements FacebookCallback<LoginResult> {
 
     @Override
     public void onSuccess(LoginResult loginResult) {
-        Log.d("login success",loginResult.toString());
         AccessToken accessToken = loginResult.getAccessToken();
         FBSharedPrefUtils.saveAccessToken(accessToken.getToken());
         makeGraphRequest(accessToken);
@@ -37,12 +36,10 @@ public class RPAFacebookCallBack implements FacebookCallback<LoginResult> {
 
     @Override
     public void onCancel() {
-        Log.d("login Canceled","");
     }
 
     @Override
     public void onError(FacebookException error) {
-        Log.d("login failed",error.toString());
         FBSharedPrefUtils.clearToken();
     }
 

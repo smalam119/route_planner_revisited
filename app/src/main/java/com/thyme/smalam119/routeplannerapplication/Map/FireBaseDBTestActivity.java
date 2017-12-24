@@ -80,9 +80,7 @@ public class FireBaseDBTestActivity extends AppCompatActivity implements OnFireB
     public void onDataChanged(DataSnapshot dataSnapshot) {
         try {
             User user = dataSnapshot.getValue(User.class);
-            Log.d("fbdb", "total duration " + user.getRouteList().get(0).getTotalDuration());
         } catch (NullPointerException e) {
-            Log.d("fbdb", "data not exist");
         }
     }
 
